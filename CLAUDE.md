@@ -1,3 +1,10 @@
+<!--
+Project rules for Claude Code.
+What this file means for Claude: Claude Code loads it into context at the start of every session
+in this repo, so every line is an instruction Claude follows. It covers how Claude works here:
+the Spec Kit workflow, the journey log, and commits, tags, branches, and PRs.
+The product's engineering principles are in .specify/memory/constitution.md, imported at the end.
+-->
 # spec-driven-calculator
 
 A public demo of spec-driven development using GitHub Spec Kit and Claude Code, with a Go calculator as the example domain. The repo doubles as tech-talk material: the git history, tags, and `docs/journey.md` must tell the story on their own.
@@ -31,7 +38,7 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 - Merge PRs with GitHub's "Create a merge commit" only (the same as `git merge --no-ff`). Never squash or rebase: both leave the step tags pointing at commits that are not on `main`, and rebase drops the author's signatures. The merge commit is not a phase, so it gets no tag.
 - Never rewrite pushed history. Never commit, tag, or push without approval.
 
-## Go
-- Go 1.27, module `github.com/sairaghavak/spec-driven-calculator`, stdlib only unless a spec justifies a dependency.
-- `gofmt`, `go vet`, and `go test ./...` must pass before any green commit.
-- Every test case cites the requirement it verifies (e.g. `// FR-001`).
+## Engineering principles
+- The product's principles (spec-first traceability, test-first, Go stdlib only, explicit errors) and the Go quality gate are in the constitution, imported below so they apply in all work, not only inside Spec Kit phases.
+
+@.specify/memory/constitution.md
