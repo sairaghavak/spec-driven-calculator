@@ -32,3 +32,7 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Claude Code per-user settings (may hold permissions or tokens).
+# .claude/skills/ stays committed: the Spec Kit skills are part of this repo.
+.claude/settings.local.json
