@@ -47,6 +47,9 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
   → A: A welcome message once at start (exact text in FR-012); the user types each operation on its
   own line; the answer (`Result: <value>` or the `Errors:` block) follows on a new line, then a
   separator line and `Please enter your input.` (exact layout in FR-012).
+- Q: Are numbers with leading zeros, such as `007`, `00.5`, or `0999`, valid? → A: No; leading
+  zeros have no meaning, so they are rejected as malformed numbers with that reason (added by the
+  author after the clarify session, before planning).
 
 ## Functional Requirements
 
@@ -59,8 +62,9 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
 - **FR-002**: The calculator MUST compute addition, subtraction, multiplication, and division, and
   show the result.
 - **FR-003**: Numbers MUST be written in plain decimal notation: an optional leading `-`, digits,
-  and an optional decimal point followed by digits (for example `7`, `-3`, `2.5`). Any other form
-  MUST be rejected as not a number.
+  and an optional decimal point followed by digits (for example `7`, `-3`, `2.5`, `0.5`). The part
+  before the decimal point MUST NOT start with `0` unless it is exactly `0` (no leading zeros:
+  `007`, `00.5`, and `0999` are malformed). Any other form MUST be rejected as not a number.
 - **FR-004**: Results MUST be rounded to at most 5 decimal places, then shown in plain decimal
   notation without trailing zeros or a trailing decimal point (`6`, not `6.0`; `0.3`, not
   `0.30000`), and never as `-0`.
@@ -68,7 +72,8 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
   the calculator MUST report what was wrong and show the expected form
   `<number> <operator> <number>` with the supported operators.
 - **FR-006**: When a number is not valid under FR-003, the calculator MUST report the offending
-  text and say that it is not a number.
+  text and say that it is not a number; when the reason is leading zeros, the message MUST say so
+  instead (for example that `007` has leading zeros, which are not allowed).
 - **FR-007**: Division by zero MUST be rejected with a message stating that division by zero is not
   allowed.
 - **FR-008**: For multiplication, each operand MUST be strictly between -200 and 200; an operand
@@ -221,6 +226,8 @@ without restarting.
 - `0.1 + 0.2`: shows `0.3`; `1 / 3`: shows `0.33333`; `2 / 3`: shows `0.66667` (FR-004).
 - `0.01 / 999`: shows `0.00001` (FR-004).
 - `NaN`, `Inf`, `1e3`, `0x10`, `1,000`: rejected as not a number (FR-003, FR-006).
+- `007 + 1`, `00.5 * 2`, `0999 - 1`, `-007 + 1`: rejected, with a message that leading zeros are not
+  allowed (FR-003, FR-006); `0.5 * 2` (shows `1`) and `0 + 1` (shows `1`) are valid.
 - `  2   +  3  ` and `2+3`: valid, both show `5` (FR-001).
 - `-3-2`: shows `-5`; `5*-2`: shows `-10`; `5--3`: shows `8` (FR-001).
 - `999 + 999`: shows `1998`; `-999.99 - 999.99`: shows `-1999.98`; `999.75 + 0`: valid, shows
@@ -246,6 +253,8 @@ without restarting.
 - Both modes come from the author's answer ("both"): one-shot when an operation is given at
   start, interactive otherwise. How a one-shot operation is passed on the command line (and how
   shells treat the `*` character) is a plan-phase decision.
+- Also left to the plan: which output stream results and errors go to, and the exact exit-status
+  values that signal success and failure in one-shot mode (FR-011).
 - The ±200 limit applies to multiplication only; addition, subtraction, and division accept any
   number allowed by the 3-digit limit (FR-014).
 - Error messages are in English.
