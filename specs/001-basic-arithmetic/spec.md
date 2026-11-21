@@ -8,130 +8,30 @@
 
 **Input**: User description: "Add feature to do basic math operations like addition, subtraction, multiplication, divison in the CLI and prompt the user whenever there is bad input or errors while computing the math operations, keep things default for now and for multiplication accept the numbers only upto 200 like 199 * 199 is valid 200 * 200 is bad input that should respond with proper user informative message"
 
-## User Scenarios & Testing *(mandatory)*
+> [!NOTE]
+> The description above does not limit how many operands a calculation takes. This spec does:
+> **exactly two operands** (`2 * 10` is supported, `2 * 10 + 15 - 50` is not). See Scope.
 
-### User Story 1 - Compute a basic operation (Priority: P1)
+## Summary
 
-A user enters two numbers and one of the four operators (addition, subtraction, multiplication,
-division) at the command line and sees the result.
+A command-line calculator that adds, subtracts, multiplies, and divides two numbers, either once
+per run or in an interactive session. Bad input and computation errors get a message that says what
+was wrong and what is accepted. Multiplication accepts only operands strictly between -200 and 200.
 
-**Why this priority**: computing a correct result is the reason the calculator exists. Without it,
-nothing else in this feature has value.
+## Scope
 
-**Independent Test**: enter `2 + 3`, `10 - 4`, `6 * 7`, and `9 / 2` and confirm the results are
-`5`, `6`, `42`, and `4.5`.
+> [!IMPORTANT]
+> **In scope**: exactly **two operands and one operator** per calculation, for example `2 * 10`.
+>
+> **Out of scope**: expressions with more than two operands, such as `2 * 10 + 15 - 50`. They are
+> rejected with the expected form `<number> <operator> <number>` (FR-001, FR-005). Also out of
+> scope: parentheses, operator precedence, memory, and history.
 
-**Acceptance Scenarios**:
-
-1. **Given** the calculator is available, **When** the user enters `2 + 3`, **Then** it shows `5`.
-2. **Given** the calculator is available, **When** the user enters `3 - 10`, **Then** it shows `-7`.
-3. **Given** the calculator is available, **When** the user enters `6 * 7`, **Then** it shows `42`.
-4. **Given** the calculator is available, **When** the user enters `9 / 2`, **Then** it shows `4.5`.
-5. **Given** the calculator is available, **When** the user enters `1.5 + 2.25`, **Then** it shows
-   `3.75`.
-
----
-
-### User Story 2 - Get an informative message for bad input (Priority: P2)
-
-A user who makes a mistake (types a word instead of a number, uses an unknown operator, leaves out
-a number, or divides by zero) gets a message that says what was wrong and what is accepted, instead
-of a wrong result or no response.
-
-**Why this priority**: the author asked explicitly that bad input and computation errors be
-reported to the user. It builds on Story 1, which must exist for there to be input to reject.
-
-**Independent Test**: enter each invalid input listed in the scenarios below and confirm each gets
-a message naming the problem, and that no result is shown.
-
-**Acceptance Scenarios**:
-
-1. **Given** the calculator is available, **When** the user enters `abc + 3`, **Then** it reports
-   that `abc` is not a number, and shows no result.
-2. **Given** the calculator is available, **When** the user enters `4 % 2`, **Then** it reports
-   that `%` is not a supported operator and lists `+`, `-`, `*`, `/`.
-3. **Given** the calculator is available, **When** the user enters `4 +`, **Then** it reports that
-   a number is missing and shows the expected form `<number> <operator> <number>`.
-4. **Given** the calculator is available, **When** the user enters `8 / 0`, **Then** it reports
-   that division by zero is not allowed, and shows no result.
-5. **Given** the calculator is available, **When** the user adds a number written as `1` followed by
-   308 zeros to itself, **Then** it reports that the result is too large to represent, and shows no
-   result.
-
----
-
-### User Story 3 - Multiplication operand limit (Priority: P3)
-
-Multiplication accepts only operands below 200. A user who multiplies with an operand of 200 or
-more gets a message stating the limit and the offending value.
-
-**Why this priority**: it is a product rule the author set for this feature, narrower than the
-general operations in Stories 1 and 2.
-
-**Independent Test**: enter `199 * 199` and confirm the result `39601`; enter `200 * 200` and
-confirm a message stating that multiplication accepts numbers below 200.
-
-**Acceptance Scenarios**:
-
-1. **Given** the calculator is available, **When** the user enters `199 * 199`, **Then** it shows
-   `39601`.
-2. **Given** the calculator is available, **When** the user enters `200 * 200`, **Then** it reports
-   that multiplication accepts numbers below 200, names `200` as the rejected value, and shows no
-   result.
-3. **Given** the calculator is available, **When** the user enters `5 * 250`, **Then** it rejects
-   `250` with the same message, even though the other operand is valid.
-4. **Given** the calculator is available, **When** the user enters `500 + 500`, **Then** it shows
-   `1000` (the limit applies to multiplication only).
-
----
-
-### User Story 4 - Interactive session (Priority: P4)
-
-A user starts the calculator with no operation, enters several operations one after another at a
-prompt, sees each result or error, and quits when done.
-
-**Why this priority**: lets the user correct a mistake and try again without restarting. It reuses
-everything in Stories 1 to 3; only the way input arrives differs.
-
-**Independent Test**: start the calculator with no operation, enter `2 + 3`, then `abc + 3`, then
-`6 * 7`, then `quit`; confirm `5`, a not-a-number message, `42`, and a clean exit.
-
-**Acceptance Scenarios**:
-
-1. **Given** the calculator was started with an operation (`6 * 7`), **When** it runs, **Then** it
-   shows `42` and exits, signaling success.
-2. **Given** the calculator was started with an invalid operation (`8 / 0`), **When** it runs,
-   **Then** it shows the division-by-zero message and exits, signaling failure.
-3. **Given** an interactive session, **When** the user enters `abc + 3`, **Then** it shows the
-   not-a-number message and prompts again.
-4. **Given** an interactive session, **When** the user enters `quit`, `exit`, or ends input,
-   **Then** the session ends.
-5. **Given** an interactive session, **When** the user enters a blank line, **Then** it prompts
-   again with no error.
-
----
-
-### Edge Cases
-
-- `199.5 * 2`: valid, because 199.5 is below 200; shows `399`.
-- `-500 * 2`: rejected, because the limit applies in both directions (FR-008); `-199 * 199` is
-  valid and shows `-39601`; `-200 * 2` is rejected.
-- `0 / 0`: reported as division by zero, the same as `8 / 0`.
-- `0 / 5`: valid, shows `0`.
-- `-0` results: shown as `0`, never `-0`.
-- Inputs such as `NaN`, `Inf`, `1e3`, `0x10`, or `1,000`: rejected as not a number (only plain
-  decimal notation is accepted, see FR-003).
-- Results too large to represent (for example adding two numbers near the largest representable
-  value): reported as an error, never shown as "infinity" or a wrong number.
-- Extra input such as `2 + 3 + 4`: rejected, with the expected form shown (one operation at a time).
-- Extra spaces around numbers and operators: ignored.
-
-## Requirements *(mandatory)*
-
-### Functional Requirements
+## Functional Requirements
 
 - **FR-001**: The calculator MUST accept one operation at a time in the form
-  `<number> <operator> <number>`, where the operator is one of `+`, `-`, `*`, `/`.
+  `<number> <operator> <number>`, where the operator is one of `+`, `-`, `*`, `/`. Extra spaces
+  around numbers and operators MUST be ignored.
 - **FR-002**: The calculator MUST compute addition, subtraction, multiplication, and division, and
   show the result.
 - **FR-003**: Numbers MUST be written in plain decimal notation: an optional leading `-`, digits,
@@ -162,25 +62,105 @@ everything in Stories 1 to 3; only the way input arrives differs.
 - **FR-013**: The interactive session MUST end when the user enters `quit` or `exit`, or when input
   ends (for example Ctrl+D). Blank lines MUST be ignored (prompt again with no error).
 
-### Key Entities
+## Non-Functional Requirements
+
+- **NFR-001**: Each result or error appears in under 1 second.
+- **NFR-002**: A user who enters bad input can correct it on the next attempt using only the error
+  message, without reading other documentation (checked by reviewing every error message against
+  the content rules in FR-005 to FR-008).
+
+## User Stories
+
+### US1 · Compute a basic operation (P1)
+
+As a user, I want to enter two numbers and an operator and see the result, so that I can do quick
+arithmetic at the command line.
+
+**Covers**: FR-001, FR-002, FR-003, FR-004, NFR-001
+
+**Acceptance Criteria** (Given the calculator is available):
+
+1. When the user enters `2 + 3`, then it shows `5`.
+2. When the user enters `3 - 10`, then it shows `-7`.
+3. When the user enters `6 * 7`, then it shows `42`.
+4. When the user enters `9 / 2`, then it shows `4.5`.
+5. When the user enters `1.5 + 2.25`, then it shows `3.75`.
+
+### US2 · Get an informative message for bad input (P2)
+
+As a user, I want a clear message when my input is wrong or cannot be computed, so that I can fix
+it instead of getting a wrong result or no response.
+
+**Covers**: FR-005, FR-006, FR-007, FR-009, FR-010, NFR-002
+
+**Acceptance Criteria** (Given the calculator is available):
+
+1. When the user enters `abc + 3`, then it reports that `abc` is not a number, and shows no result.
+2. When the user enters `4 % 2`, then it reports that `%` is not a supported operator and lists
+   `+`, `-`, `*`, `/`.
+3. When the user enters `4 +`, then it reports that a number is missing and shows the expected form
+   `<number> <operator> <number>`.
+4. When the user enters `8 / 0`, then it reports that division by zero is not allowed, and shows no
+   result.
+5. When the user adds a number written as `1` followed by 308 zeros to itself, then it reports that
+   the result is too large to represent, and shows no result.
+6. When the user enters `2 * 10 + 15 - 50`, then it reports that only one operation with two
+   numbers is accepted, shows the expected form `<number> <operator> <number>`, and shows no
+   result.
+
+### US3 · Multiplication operand limit (P3)
+
+As a user, I want multiplication to accept only operands strictly between -200 and 200, and to be
+told the limit when I exceed it, so that I know why my input was rejected and what to enter.
+
+**Covers**: FR-008, FR-010
+
+**Acceptance Criteria** (Given the calculator is available):
+
+1. When the user enters `199 * 199`, then it shows `39601`.
+2. When the user enters `200 * 200`, then it reports that multiplication accepts numbers strictly
+   between -200 and 200, names `200` as the rejected value, and shows no result.
+3. When the user enters `5 * 250`, then it rejects `250` with the same message, even though the
+   other operand is valid.
+4. When the user enters `500 + 500`, then it shows `1000` (the limit applies to multiplication
+   only).
+
+### US4 · One-shot and interactive modes (P4)
+
+As a user, I want to run a single operation from the command line, or start a session and enter
+several operations in a row, so that I can script the calculator or correct a mistake and try again
+without restarting.
+
+**Covers**: FR-011, FR-012, FR-013
+
+**Acceptance Criteria**:
+
+1. Given the calculator was started with `6 * 7`, then it shows `42` and exits, signaling success.
+2. Given the calculator was started with `8 / 0`, then it shows the division-by-zero message and
+   exits, signaling failure.
+3. Given an interactive session, when the user enters `abc + 3`, then it shows the not-a-number
+   message and prompts again.
+4. Given an interactive session, when the user enters `quit`, `exit`, or ends input, then the
+   session ends.
+5. Given an interactive session, when the user enters a blank line, then it prompts again with no
+   error.
+
+## Edge Cases
+
+- `199.5 * 2`: valid, shows `399` (FR-008).
+- `-500 * 2` and `-200 * 2`: rejected; `-199 * 199` is valid and shows `-39601` (FR-008).
+- `0 / 0`: reported as division by zero, the same as `8 / 0` (FR-007).
+- `0 / 5`: valid, shows `0` (FR-002).
+- `0 * -5`: shows `0`, not `-0` (FR-004).
+- `NaN`, `Inf`, `1e3`, `0x10`, `1,000`: rejected as not a number (FR-003, FR-006).
+- `  2   +  3  `: valid, shows `5` (FR-001).
+
+## Key Entities
 
 - **Operation**: two operands and one operator, entered by the user.
 - **Result**: the number produced by a valid operation.
 - **Error message**: the text shown for rejected input; states the problem, the offending value
   where there is one, and what is accepted.
-
-## Success Criteria *(mandatory)*
-
-### Measurable Outcomes
-
-- **SC-001**: 100% of the acceptance scenarios in Stories 1 to 4 produce exactly the stated result
-  or message.
-- **SC-002**: 100% of rejected inputs produce a message that names the problem; 0 inputs produce a
-  crash, a blank response, or a wrong result.
-- **SC-003**: A user who enters bad input can correct it on the next attempt using only the error
-  message, without reading other documentation (checked by reviewing every error message against
-  the content rules in FR-005 to FR-008).
-- **SC-004**: Each result or error appears in under 1 second.
 
 ## Assumptions
 
@@ -194,6 +174,10 @@ everything in Stories 1 to 3; only the way input arrives differs.
   shells treat the `*` character) is a plan-phase decision.
 - The limit applies to multiplication only; addition, subtraction, and division have no operand
   limit beyond what can be represented.
-- One operation at a time; chained expressions, parentheses, operator precedence, memory, and
-  history are out of scope.
 - Error messages are in English.
+
+## Definition of Done
+
+- Every acceptance criterion and edge case passes as an automated test that cites its FR or NFR.
+- Every rejected input produces a message that names the problem; no input produces a crash, a
+  blank response, or a wrong result.

@@ -16,6 +16,7 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 - When the output is wrong, fix the feature's `spec.md` or `plan.md` first, rerun the phases after it, then fix code. Record the correction in the journey log.
 - A requirement change starts in `specs/NNN-*/spec.md` (edit the existing feature, or `/speckit-specify` a new one), then flows through the later phases into code. Never change code first.
 - Spec Kit is pinned: `specify` 1.4.0, initialized with `--integration claude` and no extensions. Upgrading is its own step with its own entry.
+- Specs use the project override `.specify/templates/overrides/spec-template.md`: requirements first, then user stories, in agile terms. Its "Non-Functional Requirements" (`NFR-###`) section plays the role of Spec Kit's "Success Criteria" (`SC-###`); when a `speckit-*` skill reads or writes Success Criteria, use the NFR section. Changing the template or other Spec Kit customization is a process step: its own commit, tag, and journey entry.
 
 ## Journey log (`docs/journey.md`)
 - Append-only. Every step adds one entry, committed in the same commit as the work it describes.
@@ -32,7 +33,7 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 
 ## Commits, branches, tags
 - Conventional Commits: `docs:`, `docs(spec):`, `docs(plan):`, `docs(tasks):`, `test:`, `feat:`, `chore:`, `refactor:`.
-- One commit per phase, except implement, which is test-first and produces two: a red commit (failing tests) then a green commit (passing). So each feature has 9 commits and 9 tags.
+- One commit per phase, except implement, which is test-first and produces two: a red commit (failing tests) then a green commit (passing). So each feature has 9 phase commits and 9 tags, plus one per process step (see Workflow).
 - Every step gets an annotated tag `step-NN-<slug>` (two-digit, monotonic across features) whose message is the step's one-line summary.
 - `main` changes only through pull requests: one branch and one PR per unit of work. Setup steps (00 to 02) live on `000-project-setup`; each feature gets a branch named after its spec folder (`git checkout -b 001-basic-arithmetic` for `specs/001-basic-arithmetic/`).
 - Merge PRs with GitHub's "Create a merge commit" only (the same as `git merge --no-ff`). Never squash or rebase: both leave the step tags pointing at commits that are not on `main`, and rebase drops the author's signatures. The merge commit is not a phase, so it gets no tag.
