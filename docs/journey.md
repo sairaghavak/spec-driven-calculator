@@ -100,3 +100,13 @@ How this repo was built, one step at a time, with GitHub Spec Kit and Claude Cod
   3. The other two items (error output stream and exit codes; shell expansion of `*`) were left to `/speckit-plan`. The `*` item was already in Assumptions; the stream and exit-code item existed only in Claude's memory, so a line was added to Assumptions (see Step 07).
   4. The AI planned to fold this into the plan commit; the author asked for its own step, so the plan commit holds only plan output.
 - Takeaway for readers: A gap found after clarify still goes into the spec, not into the code or someone's memory. Before planning, the fix costs one edit and one commit; once tests exist, the same decision costs a red-green cycle.
+
+## Step 07 · Process rule · tag: step-07-repo-state
+- Goal: make the repo the only source of project state, so the work continues even if Claude's memory is deleted.
+- Command/prompt: "Side note is that I heard from someone that a project/repo enabled with spec-driven development framework like spec-kit should work even if the memory is deleted like ~/.claude/projects"
+- AI produced: `CLAUDE.md`: a Workflow rule that project state lives only in step tags, `specs/`, and the journey log; a session finds the current step from the latest `step-NN` tag and `git status`; open decisions go in the feature's `spec.md` or `plan.md`; Claude's memory holds only machine-local notes.
+- Human review, in rounds:
+  1. The AI checked its own resume note in memory against the repo. The current step, branch, and feature folder could all be recovered from tags and branch names. One open plan item (error output stream and exit codes) existed only in memory and chat, a real gap; it moved into the spec's Assumptions (Step 06). Notes about the author's own machine and account (how to check that the signing key is unlocked before a commit, the GitHub CLI login) stay in memory: they are useless to anyone else and don't belong in a public repo.
+  2. The author approved the rule. Outside the repo, the resume note was deleted and memory cut down to environment notes.
+  3. Verified: the next session, with only environment notes in memory, answered "where are we" with "Step 05 done, next is plan", using only the tags and `git status`.
+- Takeaway for readers: Don't let the agent's memory become a second project tracker. It lives on one machine and nobody reviews it, so anything needed to continue the work belongs in versioned files a teammate, another tool, or a fresh session can read. Test it by asking a fresh session "where are we?".

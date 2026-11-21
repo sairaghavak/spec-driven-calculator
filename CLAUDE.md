@@ -13,6 +13,7 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 - Spec Kit phases, in order: constitution (once per project), then per feature: specify, clarify, plan, checklist, tasks, analyze, implement, converge. No phase is skipped.
 - Each phase is reviewed by the author, then committed and tagged before the next starts. That commit is the approval.
 - Write Go code (tests included) only to complete a task in a committed `specs/NNN-*/tasks.md`, and reference the task ID (e.g. `T012`) in the commit.
+- Project state lives only in the repo: step tags, `specs/`, and the journey log. At session start, find the current step from the latest `step-NN` tag and `git status`; open decisions belong in the feature's `spec.md` or `plan.md`. Claude's memory holds only machine-local notes, never anything needed to continue the work.
 - When the output is wrong, fix the feature's `spec.md` or `plan.md` first, rerun the phases after it, then fix code. Record the correction in the journey log.
 - A requirement change starts in `specs/NNN-*/spec.md` (edit the existing feature, or `/speckit-specify` a new one), then flows through the later phases into code. Never change code first.
 - Spec Kit is pinned: `specify` 1.4.0, initialized with `--integration claude` and no extensions. Upgrading is its own step with its own entry.
