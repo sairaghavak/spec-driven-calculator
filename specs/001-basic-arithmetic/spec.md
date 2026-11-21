@@ -21,24 +21,49 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
 ## Scope
 
 > [!IMPORTANT]
-> **In scope**: exactly **two operands and one operator** per calculation, for example `2 * 10`.
+> **In scope**: exactly **two operands and one operator** per calculation, for example `2 * 10`,
+> each with **at most 3 digits before and 2 digits after the decimal point** (up to `999.99`).
 >
 > **Out of scope**: expressions with more than two operands, such as `2 * 10 + 15 - 50`. They are
 > rejected with the expected form `<number> <operator> <number>` (FR-001, FR-005). Also out of
 > scope: parentheses, operator precedence, memory, and history.
 
+## Clarifications
+
+### Session 2026-11-21
+
+- Q: When a result has a long or inexact decimal expansion, how should it be shown, for example
+  `0.1 + 0.2` or `1 / 3`? → A: Round to 5 decimal places.
+- Q: Must the user put spaces between the numbers and the operator, or should `2+3` and `-3-2` also
+  be accepted? → A: Spaces optional; `2+3`, `-3-2`, and `5*-2` are valid.
+- Q: What should happen when the user types a number that is itself too large for the calculator to
+  hold? → A: Limit every number to 3 digits before the decimal point (up to 999) and, as the
+  author added, 2 digits after it; reject longer ones. Results can then never be too large, so
+  FR-009 is removed.
+- Q: When one input breaks more than one rule, for example `1000 * 5` or `abc / 0`, which message
+  should the user see? → A: All problems at once, under the headline `Errors:`, each problem on
+  its own line as a list item.
+- Q: In an interactive session, what text should the calculator show when it is waiting for input?
+  → A: A welcome message once at start (exact text in FR-012); the user types each operation on its
+  own line; the answer (`Result: <value>` or the `Errors:` block) follows on a new line, then a
+  separator line and `Please enter your input.` (exact layout in FR-012).
+
 ## Functional Requirements
 
 - **FR-001**: The calculator MUST accept one operation at a time in the form
-  `<number> <operator> <number>`, where the operator is one of `+`, `-`, `*`, `/`. Extra spaces
-  around numbers and operators MUST be ignored.
+  `<number> <operator> <number>`, where the operator is one of `+`, `-`, `*`, `/`. Spaces around
+  numbers and operators are optional and MUST be ignored (`2+3` and `2 + 3` are the same); spaces
+  inside a number are not allowed. A `-` written directly before the digits, at the start of the
+  input or right after the operator, is the number's sign; any other `-` is the subtraction
+  operator.
 - **FR-002**: The calculator MUST compute addition, subtraction, multiplication, and division, and
   show the result.
 - **FR-003**: Numbers MUST be written in plain decimal notation: an optional leading `-`, digits,
   and an optional decimal point followed by digits (for example `7`, `-3`, `2.5`). Any other form
   MUST be rejected as not a number.
-- **FR-004**: Results MUST be shown in plain decimal notation, without trailing zeros or a trailing
-  decimal point (`6`, not `6.0`), and never as `-0`.
+- **FR-004**: Results MUST be rounded to at most 5 decimal places, then shown in plain decimal
+  notation without trailing zeros or a trailing decimal point (`6`, not `6.0`; `0.3`, not
+  `0.30000`), and never as `-0`.
 - **FR-005**: When the input does not match FR-001 (missing number, extra input, unknown operator),
   the calculator MUST report what was wrong and show the expected form
   `<number> <operator> <number>` with the supported operators.
@@ -49,25 +74,46 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
 - **FR-008**: For multiplication, each operand MUST be strictly between -200 and 200; an operand
   of 200 or more, or -200 or less, MUST be rejected with a message that states the limit and names
   the offending value.
-- **FR-009**: A result that cannot be represented as a finite number MUST be reported as an error,
-  not shown.
-- **FR-010**: Whenever input is rejected (FR-005 to FR-009), no result MUST be shown for that
-  operation.
+- **FR-009**: Removed (clarification 2026-11-21): with the 3-digit limit in FR-014, no result can be
+  too large to represent.
+- **FR-010**: Whenever input is rejected (FR-005 to FR-008, FR-014), no result MUST be shown for
+  that operation.
 - **FR-011**: When the calculator is started with an operation, it MUST run in one-shot mode:
   compute that one operation, show the result or the error, then exit, signaling success or failure
-  to the caller so a script can tell them apart.
+  to the caller so a script can tell them apart. A result MUST be shown as the bare value with no
+  label (`5`, not `Result: 5`), so a script can capture it.
 - **FR-012**: When the calculator is started without an operation, it MUST run an interactive
-  session: show a prompt, read one operation per line, show the result or the error, and prompt
-  again. A rejected operation MUST NOT end the session.
+  session. It MUST first show this welcome message, exactly, as six lines (the fifth is 59 `=`
+  characters, the length of the second line):
+  ```
+  Welcome to the interactive calculator session.
+  A spec-driven development demo, built with GitHub Spec Kit.
+  Operations: +, -, *, /
+  Use exactly 2 numbers and 1 operator, for example 2+3
+  ===========================================================
+  Please enter your input. Example: 10/5
+  ```
+  Then, for each line the user enters (for example `2+3`), it MUST show on new lines: the answer,
+  either `Result: <value>` (value as in FR-004) or the `Errors:` block (FR-015); then a separator
+  line of 59 `-` characters (the same width as the `=` line); then `Please enter your input.`; and wait for the next line. A rejected
+  operation MUST NOT end the session.
 - **FR-013**: The interactive session MUST end when the user enters `quit` or `exit`, or when input
-  ends (for example Ctrl+D). Blank lines MUST be ignored (prompt again with no error).
+  ends (for example Ctrl+D). Blank lines MUST be ignored (wait for the next line, no error).
+- **FR-014**: Each number MUST have at most 3 digits before the decimal point and at most 2 digits
+  after it (largest `999.99`). A number with more MUST be rejected with a message that states the
+  limit and names the offending value.
+- **FR-015**: Rejected input MUST be reported as a headline line `Errors:` followed by one line per
+  problem, each written as a list item starting with `- `, even when there is only one. If the input shape is wrong (FR-005), only that problem is reported.
+  Otherwise every problem found is reported, left number before right, in this order: not a number
+  (FR-006), digit limits (FR-014), multiplication limit (FR-008), division by zero (FR-007). A
+  number that is not a number is not checked further.
 
 ## Non-Functional Requirements
 
 - **NFR-001**: Each result or error appears in under 1 second.
 - **NFR-002**: A user who enters bad input can correct it on the next attempt using only the error
   message, without reading other documentation (checked by reviewing every error message against
-  the content rules in FR-005 to FR-008).
+  the content rules in FR-005 to FR-008 and FR-014).
 
 ## User Stories
 
@@ -91,7 +137,7 @@ arithmetic at the command line.
 As a user, I want a clear message when my input is wrong or cannot be computed, so that I can fix
 it instead of getting a wrong result or no response.
 
-**Covers**: FR-005, FR-006, FR-007, FR-009, FR-010, NFR-002
+**Covers**: FR-005, FR-006, FR-007, FR-010, FR-014, FR-015, NFR-002
 
 **Acceptance Criteria** (Given the calculator is available):
 
@@ -102,11 +148,13 @@ it instead of getting a wrong result or no response.
    `<number> <operator> <number>`.
 4. When the user enters `8 / 0`, then it reports that division by zero is not allowed, and shows no
    result.
-5. When the user adds a number written as `1` followed by 308 zeros to itself, then it reports that
-   the result is too large to represent, and shows no result.
+5. When the user enters `1000 + 1`, then it reports that numbers may have at most 3 digits before
+   and 2 digits after the decimal point, names `1000` as the rejected value, and shows no result.
 6. When the user enters `2 * 10 + 15 - 50`, then it reports that only one operation with two
    numbers is accepted, shows the expected form `<number> <operator> <number>`, and shows no
    result.
+7. When the user enters `1000 * 5`, then it shows `Errors:` followed by two list items: the
+   digit-limit message for `1000`, then the multiplication-limit message for `1000`.
 
 ### US3 · Multiplication operand limit (P3)
 
@@ -135,32 +183,58 @@ without restarting.
 
 **Acceptance Criteria**:
 
-1. Given the calculator was started with `6 * 7`, then it shows `42` and exits, signaling success.
-2. Given the calculator was started with `8 / 0`, then it shows the division-by-zero message and
+1. Given the calculator was started with no operation, then it shows the six-line welcome message
+   from FR-012; when the user then enters `2+3`, it shows, on new lines:
+   ```
+   Result: 5
+   -----------------------------------------------------------
+   Please enter your input.
+   ```
+   and waits for more input.
+2. Given the calculator was started with `6 * 7`, then it shows only `42` (no label) and exits,
+   signaling success.
+3. Given the calculator was started with `8 / 0`, then it shows the division-by-zero message and
    exits, signaling failure.
-3. Given an interactive session, when the user enters `abc + 3`, then it shows the not-a-number
-   message and prompts again.
-4. Given an interactive session, when the user enters `quit`, `exit`, or ends input, then the
+4. Given an interactive session, when the user enters `abc + 3`, then it shows, on new lines:
+   ```
+   Errors:
+   - <not-a-number message for abc>
+   -----------------------------------------------------------
+   Please enter your input.
+   ```
+   and waits for the next line.
+5. Given an interactive session, when the user enters `quit`, `exit`, or ends input, then the
    session ends.
-5. Given an interactive session, when the user enters a blank line, then it prompts again with no
-   error.
+6. Given an interactive session, when the user enters a blank line, then it waits for the next line
+   with no error.
 
 ## Edge Cases
 
 - `199.5 * 2`: valid, shows `399` (FR-008).
 - `-500 * 2` and `-200 * 2`: rejected; `-199 * 199` is valid and shows `-39601` (FR-008).
+- `abc / 0`: `Errors:` followed by the not-a-number message for `abc`, then the division-by-zero
+  message (FR-015).
+- `4 + abc 5`: only the input-shape message, because the shape is checked first (FR-015).
 - `0 / 0`: reported as division by zero, the same as `8 / 0` (FR-007).
 - `0 / 5`: valid, shows `0` (FR-002).
 - `0 * -5`: shows `0`, not `-0` (FR-004).
+- `0.1 + 0.2`: shows `0.3`; `1 / 3`: shows `0.33333`; `2 / 3`: shows `0.66667` (FR-004).
+- `0.01 / 999`: shows `0.00001` (FR-004).
 - `NaN`, `Inf`, `1e3`, `0x10`, `1,000`: rejected as not a number (FR-003, FR-006).
-- `  2   +  3  `: valid, shows `5` (FR-001).
+- `  2   +  3  ` and `2+3`: valid, both show `5` (FR-001).
+- `-3-2`: shows `-5`; `5*-2`: shows `-10`; `5--3`: shows `8` (FR-001).
+- `999 + 999`: shows `1998`; `-999.99 - 999.99`: shows `-1999.98`; `999.75 + 0`: valid, shows
+  `999.75` (FR-014).
+- `0.001 + 1` and `1.125 * 2`: rejected, because they have 3 digits after the decimal point
+  (FR-014).
+- `2 3 + 4`: rejected, with the expected form shown (FR-001, FR-005).
 
 ## Key Entities
 
 - **Operation**: two operands and one operator, entered by the user.
 - **Result**: the number produced by a valid operation.
-- **Error message**: the text shown for rejected input; states the problem, the offending value
-  where there is one, and what is accepted.
+- **Error message**: the text shown for rejected input, one line per problem under `Errors:`;
+  states the problem, the offending value where there is one, and what is accepted.
 
 ## Assumptions
 
@@ -172,8 +246,8 @@ without restarting.
 - Both modes come from the author's answer ("both"): one-shot when an operation is given at
   start, interactive otherwise. How a one-shot operation is passed on the command line (and how
   shells treat the `*` character) is a plan-phase decision.
-- The limit applies to multiplication only; addition, subtraction, and division have no operand
-  limit beyond what can be represented.
+- The ±200 limit applies to multiplication only; addition, subtraction, and division accept any
+  number allowed by the 3-digit limit (FR-014).
 - Error messages are in English.
 
 ## Definition of Done
