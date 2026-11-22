@@ -7,7 +7,7 @@ The product's engineering principles are in .specify/memory/constitution.md, imp
 -->
 # spec-driven-calculator
 
-A public demo of spec-driven development using GitHub Spec Kit and Claude Code, with a Go calculator as the example domain. The repo doubles as tech-talk material: the git history, tags, and `docs/journey.md` must tell the story on their own.
+A public demo of spec-driven development using GitHub Spec Kit and Claude Code, with a Go calculator as the example domain. The repo doubles as tech-talk material: the git history, tags, and [`docs/journey.md`](docs/journey.md) must tell the story on their own.
 
 ## Workflow
 - Spec Kit phases, in order: constitution (once per project), then per feature: specify, clarify, plan, checklist, tasks, analyze, implement, converge. No phase is skipped.
@@ -17,10 +17,23 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 - When the output is wrong, fix the feature's `spec.md` or `plan.md` first, rerun the phases after it, then fix code. Record the correction in the journey log.
 - A requirement change starts in `specs/NNN-*/spec.md` (edit the existing feature, or `/speckit-specify` a new one), then flows through the later phases into code. Never change code first.
 - Spec Kit is pinned: `specify` 1.4.0, initialized with `--integration claude` and no extensions. Upgrading is its own step with its own entry.
-- Specs use the project override `.specify/templates/overrides/spec-template.md`: requirements first, then user stories, in agile terms. Its "Non-Functional Requirements" (`NFR-###`) section plays the role of Spec Kit's "Success Criteria" (`SC-###`); when a `speckit-*` skill reads or writes Success Criteria, use the NFR section. Changing the template or other Spec Kit customization is a process step: its own commit, tag, and journey entry.
+- Specs use the project override [`.specify/templates/overrides/spec-template.md`](.specify/templates/overrides/spec-template.md): requirements first, then user stories, in agile terms. Its "Non-Functional Requirements" (`NFR-###`) section plays the role of Spec Kit's "Success Criteria" (`SC-###`); when a `speckit-*` skill reads or writes Success Criteria, use the NFR section. Changing the template or other Spec Kit customization is a process step: its own commit, tag, and journey entry.
 
-## Journey log (`docs/journey.md`)
+## Spec documents (`specs/NNN-*/`)
+- Spec Kit's templates and command instructions are a starting point, not a checklist. Don't fill a section or create a file only because the template has it: for each one, decide whether it has a purpose in this feature. If a field does not apply, write "N/A" or "Not required" with a one-line reason (e.g. "Storage: N/A, nothing is saved"); if a whole file or section adds nothing another file does not already cover, skip it and record why in `plan.md` and the journey entry. Never write filler to satisfy a template.
+- A feature's documents are `spec.md`, `plan.md`, `research.md`, `tasks.md`, and `checklists/`. When `/speckit-plan` says to generate `data-model.md`, `contracts/`, or `quickstart.md`, skip them (the project override [`.specify/templates/overrides/plan-template.md`](.specify/templates/overrides/plan-template.md) lists only the kept files): exact user-facing text (messages, output layout) goes in `spec.md`, and design rules go in `research.md`. Every file must have a purpose no other file already covers; later Spec Kit steps read the skipped files only if they exist.
+- `research.md` uses Spec Kit's fields for each decision: Decision, Rationale, Alternatives considered. Write each alternative as clearly not chosen ("We did not choose this. If we had, ...").
+- Every mention of an ID is a link to where it is defined, in every file under `specs/`, `spec.md` included, and every time it appears (a second mention in the same sentence is linked too). The only bare ID is the definition itself: the bold `**FR-001**:` label or the `### US1` heading. Targets, with examples from feature 001: `FR-###` and `NFR-###` link to the spec's requirement headings ([FR-004](specs/001-basic-arithmetic/spec.md#functional-requirements), [NFR-001](specs/001-basic-arithmetic/spec.md#non-functional-requirements)), `US#` to the story heading ([US3](specs/001-basic-arithmetic/spec.md#us3--multiplication-operand-limit-p3)), `R#` to the research decision ([R2](specs/001-basic-arithmetic/research.md#r2--typing-an-operation-in-one-shot-mode)), and `T###` to the task. Write the path relative to the file that holds the link: in `plan.md` the target is `spec.md#functional-requirements`; inside `spec.md` it is just `#functional-requirements`; in `checklists/requirements.md` it is `../spec.md#functional-requirements`. Anchors are GitHub's heading slugs. Before handing a document over, search it for bare IDs.
+- Write for readers who do not know Go: each rule or decision states what the user or a script sees, with a concrete input and output. Go names appear only in parentheses. No filler: no preamble, no restating the spec.
+- Acceptance criteria name their mode (one-shot or interactive session) whenever the output differs between modes.
+
+## File links in Markdown
+- In every Markdown file this project owns, each mention of a file that exists in the repo is a link to it, with the path relative to the file that holds the link. For example, this file links [`docs/journey.md`](docs/journey.md), while `plan.md` links the same kind of root file as `../../CLAUDE.md`. When the name is in backticks, keep the backticks inside the link text, as in [`docs/journey.md`](docs/journey.md). Never put a link inside backticks or a code block: it shows as plain text, not a link. Before handing a document over, search it for unlinked file names.
+- Not linked: names inside code blocks; patterns and placeholders (`specs/NNN-*/spec.md`); generic names meaning "this file in any feature"; files not created yet or deleted (link them once they exist); the `@` import line below; journey entries already committed (append-only); Spec Kit's own files, including the templates in `.specify/templates/` (their text is copied into feature folders, where relative links would break); and the constitution, which changes only through `/speckit-constitution`.
+
+## Journey log ([`docs/journey.md`](docs/journey.md))
 - Append-only. Every step adds one entry, committed in the same commit as the work it describes.
+- Write the entry when the step starts, not at commit time: Goal, Command/prompt, and AI produced first, then add each Human review round as soon as it closes. The takeaway is written last, when the step closes.
 - One job per place, no fact written in full twice: the commit message is the subject plus one line of why; the tag message is the step's one-line summary; the journey entry holds the detail.
 - Entry format:
   ```
@@ -41,6 +54,6 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 - Never rewrite pushed history. Never commit, tag, or push without approval.
 
 ## Engineering principles
-- The product's principles (spec-first traceability, test-first, Go stdlib only, explicit errors) and the Go quality gate are in the constitution, imported below so they apply in all work, not only inside Spec Kit phases.
+- The product's principles (spec-first traceability, test-first, Go stdlib only, explicit errors) and the Go quality gate are in the [constitution](.specify/memory/constitution.md), imported below so they apply in all work, not only inside Spec Kit phases.
 
 @.specify/memory/constitution.md
