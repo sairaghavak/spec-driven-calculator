@@ -31,11 +31,11 @@
 
 ## Notes
 
-- Iteration 1: 2 [NEEDS CLARIFICATION] markers open (FR-011 interaction mode; FR-008 and the
+- Iteration 1: 2 [NEEDS CLARIFICATION] markers open ([FR-011](../spec.md#functional-requirements) interaction mode; [FR-008](../spec.md#functional-requirements) and the
   `-500 * 2` edge case, negative operands under the multiplication limit). Awaiting author answers.
 - Iteration 2: author answered Q1: C (both modes) and Q2: A (limit on size, -200 < x < 200).
-  Added FR-012, FR-013 and User Story 4; updated FR-008, FR-010, FR-011. All items pass.
+  Added [FR-012](../spec.md#functional-requirements), [FR-013](../spec.md#functional-requirements) and [User Story 4](../spec.md#us4--one-shot-and-interactive-modes-p4); updated [FR-008](../spec.md#functional-requirements), [FR-010](../spec.md#functional-requirements), [FR-011](../spec.md#functional-requirements). All items pass.
 - Iteration 3 (Step 04): spec restructured to the project's override template (requirements first,
-  SC-003/SC-004 became NFR-002/NFR-001, SC-001/SC-002 became Definition of Done). Meaning unchanged;
+  SC-003/SC-004 became [NFR-002](../spec.md#non-functional-requirements)/[NFR-001](../spec.md#non-functional-requirements), SC-001/SC-002 became Definition of Done). Meaning unchanged;
   all items still pass.
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
