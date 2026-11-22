@@ -90,24 +90,14 @@ Each decision uses Spec Kit's three fields:
 
 ## R5 · Finding mistakes in the input
 
-- **Decision**: read the input piece by piece: number, operator, number. A `-` right before a
-  number, at the start or right after the operator, is that number's sign
+- **Decision**: read the input piece by piece: number, operator, number. A `-` written directly
+  before a number or word, at the start or right after the operator, is its sign
   ([FR-001](spec.md#functional-requirements)). When the pieces are not number, operator, number,
-  the calculator picks one message, checking in this order:
-
-  | Input | Message ([Error messages](spec.md#error-messages)) |
-  |---|---|
-  | nothing, or only spaces | nothing entered |
-  | three words, the middle one has no digit: `4 % 2`, `4 x 2` | unknown operator, naming the middle word |
-  | more than two numbers or more than one operator: `2 * 10 + 15`, `2 3 + 4` | too many numbers |
-  | fewer than two numbers: `4 +`, `+ 4`, `4` | missing number |
-  | no operator: `4 5` | missing operator |
-  | anything else: `4 5 +` | operator not between the numbers |
-
+  the spec's [Which shape message is shown](spec.md#which-shape-message-is-shown) table decides
+  the message.
 - **Rationale**: the calculator can say exactly what is wrong
-  ([FR-005](spec.md#functional-requirements)). A `-` joined to a word that is not a number, such
-  as `-abc + 3`, is treated as that word's sign too, so the user sees `"-abc" is not a number`
-  instead of a vaguer input-shape message.
+  ([FR-005](spec.md#functional-requirements)). For example, `-abc + 3` is reported as
+  `"-abc" is not a number`, not as a vague input-shape problem.
 - **Alternatives considered**: check the whole line against one pattern (a "regular expression")
   that describes a valid line: number, operator, number. We did not choose this. If we had,
   `4 +`, `4 % 2`, and `2 * 10 + 15` would all just fail to match. The calculator would know the
