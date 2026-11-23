@@ -26,15 +26,15 @@ Each user story lists its tasks, as in JIRA.
 
 All code goes in `cmd/calc/`.
 
-**Summary**: 4 user stories, 25 tasks (11 red, 13 green, 1 convergence)
+**Summary**: 4 user stories, 26 tasks (11 red, 13 green, 2 convergence)
 
 | Story | Red commit | Green commit | Convergence | Tasks |
 |---|---|---|---|---|
 | [US1](spec.md#us1--compute-a-basic-operation-p1) · Compute a basic operation | 5 | 3 | 0 | 8 |
 | [US2](spec.md#us2--get-an-informative-message-for-bad-input-p2) · Bad-input messages | 2 | 3 | 0 | 5 |
 | [US3](spec.md#us3--multiplication-operand-limit-p3) · Multiplication limit | 1 | 1 | 0 | 2 |
-| [US4](spec.md#us4--one-shot-and-interactive-modes-p4) · One-shot and session modes | 3 | 6 | 1 | 10 |
-| **Total** | **11** | **13** | **1** | **25** |
+| [US4](spec.md#us4--one-shot-and-interactive-modes-p4) · One-shot and session modes | 3 | 6 | 2 | 11 |
+| **Total** | **11** | **13** | **2** | **26** |
 
 ## [US1](spec.md#us1--compute-a-basic-operation-p1) · Compute a basic operation
 
@@ -203,7 +203,7 @@ Added by `/speckit-converge` on its second run, which also checks that every beh
 
 **Spec fix (its own commit)**
 
-- [ ] T026 [US4] - Extend functional requirements [FR-011](spec.md#functional-requirements) and [FR-012](spec.md#functional-requirements) in [`spec.md`](spec.md): where output goes and the exit codes
+- [x] T026 [US4] - Extend functional requirements [FR-011](spec.md#functional-requirements) and [FR-012](spec.md#functional-requirements) in [`spec.md`](spec.md): where output goes and the exit codes
   - One-shot: the typed pieces are joined with spaces ([R2](research.md#r2--typing-an-operation-in-one-shot-mode))
   - One-shot: the result goes to normal output, the `Errors:` block to error output ([R3](research.md#r3--where-output-goes-in-one-shot-mode))
   - One-shot: exit code 0 for a result, 1 for errors ([R4](research.md#r4--how-a-script-knows-whether-the-operation-worked))

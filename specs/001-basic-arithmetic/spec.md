@@ -92,10 +92,11 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
   too large to represent.
 - **FR-010**: Whenever input is rejected ([FR-005](#functional-requirements) to [FR-008](#functional-requirements), [FR-014](#functional-requirements)), no result MUST be shown for
   that operation.
-- **FR-011**: When the calculator is started with an operation, it MUST run in one-shot mode:
-  compute that one operation, show the result or the error, then exit, signaling success or failure
-  to the caller so a script can tell them apart. A result MUST be shown as the bare value with no
-  label (`5`, not `Result: 5`), so a script can capture it.
+- **FR-011**: When the calculator is started with an operation, it MUST run in one-shot mode: join
+  the typed pieces with spaces into one operation, compute it, then exit. A result MUST go to the
+  normal output as the bare value with no label (`5`, not `Result: 5`), with exit code 0. Rejected
+  input MUST go to the error output as the `Errors:` block ([FR-015](#functional-requirements)),
+  with exit code 1. A script can then capture the result and tell success from failure.
 - **FR-012**: When the calculator is started without an operation, it MUST run an interactive
   session. It MUST first show this welcome message, exactly, as six lines (the fifth is 59 `=`
   characters, the length of the second line):
@@ -110,7 +111,9 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
   Then, for each line the user enters (for example `2+3`), it MUST show on new lines: the answer,
   either `Result: <value>` (value as in [FR-004](#functional-requirements)) or the `Errors:` block ([FR-015](#functional-requirements)); then a separator
   line of 59 `-` characters (the same width as the `=` line); then `Please enter your input.`; and wait for the next line. A rejected
-  operation MUST NOT end the session.
+  operation MUST NOT end the session. Everything the session shows goes to the normal output. When
+  the session ends normally ([FR-013](#functional-requirements)), its exit code is 0, even if some
+  operations were rejected.
 - **FR-013**: The interactive session MUST end when the user enters `quit` or `exit` (lowercase;
   spaces around it are ignored), or when input ends (for example Ctrl+D). Blank lines, including lines of only spaces, MUST be ignored (wait for
   the next line, no error). When the session ends, nothing more is printed.
@@ -327,7 +330,8 @@ without restarting.
   negative operands too (author's answer: limit on size, so -199 is accepted and -200 rejected).
 - Both modes come from the author's answer ("both"): one-shot when an operation is given at
   start, interactive otherwise. The plan decided how a one-shot operation is typed ([R2](research.md#r2--typing-an-operation-in-one-shot-mode)), where
-  results and errors go ([R3](research.md#r3--where-output-goes-in-one-shot-mode)), and the exit codes ([R4](research.md#r4--how-a-script-knows-whether-the-operation-worked)).
+  results and errors go ([R3](research.md#r3--where-output-goes-in-one-shot-mode)), and the exit codes ([R4](research.md#r4--how-a-script-knows-whether-the-operation-worked)); [FR-011](#functional-requirements) and [FR-012](#functional-requirements) now
+  state these as requirements.
 - Input piped in with no operation (`echo "2+3" | calc`) runs the normal interactive session,
   welcome text included. Scripts should use one-shot mode.
 - The ±200 limit applies to multiplication only; addition, subtraction, and division accept any
