@@ -1,0 +1,2 @@
+# Spec Kit's own files are tooling, not this project's code: keep them out of GitHub's language stats.
+.specify/** linguist-vendored

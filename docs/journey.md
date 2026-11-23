@@ -292,3 +292,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
   5. For phones, both tables became lists: GitHub tables cannot hold list items and need sideways scrolling on a narrow screen.
   6. The author asked to see it on GitHub before approving, so it went up as a draft pull request.
 - Takeaway for readers: Generate a README's facts from the repo itself (tags, commits, changed files) instead of typing them, so it cannot drift from the history it describes. And check it on a phone: many people will open the link there first.
+
+## Step 25 · Language stats · tag: step-25-language-stats
+- Goal: make GitHub show the repo as a Go project, which it is.
+- Command/prompt: "And the repo language is showing as shell, instead it should be Golang right"
+- AI produced: [`.gitattributes`](../.gitattributes), one rule marking Spec Kit's folder as vendored.
+- Human review, in rounds:
+  1. GitHub counts bytes per language. Spec Kit's six helper scripts in `.specify/scripts/bash/` are 75,373 bytes of shell; the calculator is 23,630 bytes of Go, so GitHub labeled the repo Shell. Marking `.specify/` as `linguist-vendored`, GitHub's standard way to say "third-party code shipped with the repo", leaves it out of the count; the scripts stay and Spec Kit works the same. The author approved the change as its own step.
+- Takeaway for readers: When a framework ships its own scripts into your repo, mark them as vendored with a one-line `.gitattributes` rule. Otherwise the tool's code can outweigh yours, and the repo is labeled with the wrong language.
