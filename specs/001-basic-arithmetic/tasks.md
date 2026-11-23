@@ -68,14 +68,14 @@ Done when the tests show `2 + 3` gives `5` and `0.1 + 0.2` gives `0.3`.
 
 **Code (green commit)**
 
-- [ ] T006 [US1] - Split the input into numbers and operators in `cmd/calc/calc.go`
+- [x] T006 [US1] - Split the input into numbers and operators in `cmd/calc/calc.go`
   - Spaces and tabs separate the pieces
   - `+ - * /` are operators
   - A `-` right before a number or word, at the start or after the operator, is its sign
-- [ ] T007 [US1] - Read each number in `cmd/calc/calc.go`
+- [x] T007 [US1] - Read each number in `cmd/calc/calc.go`
   - Accept only the number format in the spec
   - Store it as an exact fraction (`math/big.Rat`)
-- [ ] T008 [US1] - Compute and show the result in `cmd/calc/calc.go`
+- [x] T008 [US1] - Compute and show the result in `cmd/calc/calc.go`
   - Add, subtract, multiply, or divide exactly
   - Round to 5 decimal places; a 5 rounds away from zero
   - Drop trailing zeros and a trailing `.`
@@ -104,13 +104,13 @@ Done when the tests show every bad input gets the spec's exact messages, in orde
 
 **Code (green commit)**
 
-- [ ] T011 [US2] - Add an error that holds a list of problems in `cmd/calc/calc.go`
+- [x] T011 [US2] - Add an error that holds a list of problems in `cmd/calc/calc.go`
   - `type InputError struct{ Problems []string }`
   - Returned for every bad input; the program never crashes
-- [ ] T012 [US2] - Choose the message for a badly shaped input in `cmd/calc/calc.go`
+- [x] T012 [US2] - Choose the message for a badly shaped input in `cmd/calc/calc.go`
   - Follow the spec's "Which shape message is shown" table
   - Exactly one message
-- [ ] T013 [US2] - Check each number in `cmd/calc/calc.go`
+- [x] T013 [US2] - Check each number in `cmd/calc/calc.go`
   - Check by kind, in this order; within each kind, left number before right
   - First: is it a number, without leading zeros? If not, stop checking it
   - Then: at most 3 digits before and 2 after the point
@@ -130,7 +130,7 @@ Done when the tests show `199 * 199` gives `39601` and `200 * 200` gives two lim
 
 **Code (green commit)**
 
-- [ ] T015 [US3] - Add the multiplication limit in `cmd/calc/calc.go`
+- [x] T015 [US3] - Add the multiplication limit in `cmd/calc/calc.go`
   - Only for `*`
   - Each number must be strictly between -200 and 200
   - Checked after the digit limit, even for numbers that failed it
@@ -161,26 +161,26 @@ Done when `calc 6*7` prints `42`, and a session with `2+3` shows `Result: 5`.
 
 **Code and final checks (green commit)**
 
-- [ ] T019 [US4] - Add one-shot mode in `cmd/calc/cli.go`
+- [x] T019 [US4] - Add one-shot mode in `cmd/calc/cli.go`
   - Join the typed pieces with spaces; compute once
   - Answer: print it alone, exit code 0
   - Errors: print the `Errors:` block to the error output, exit code 1
-- [ ] T020 [US4] - Add the session in `cmd/calc/cli.go`
+- [x] T020 [US4] - Add the session in `cmd/calc/cli.go`
   - Used when nothing is typed after `calc`
   - Print the welcome exactly as in the spec
   - Read line by line; skip blank lines
   - Stop on `quit`, `exit`, or end of input
   - Otherwise print `Result: <answer>` or the `Errors:` block, the `-` line, the prompt
-- [ ] T021 [US4] - Create the program entry point in `cmd/calc/main.go`
+- [x] T021 [US4] - Create the program entry point in `cmd/calc/main.go`
   - Calls `run` with the real arguments, keyboard, and screen
   - Needed to build the `calc` program; the tests do not use it
-- [ ] T022 [US4] - Keep built programs out of git, in `.gitignore`
+- [x] T022 [US4] - Keep built programs out of git, in `.gitignore`
   - Add `/bin/`, before the first build
-- [ ] T023 [US4] - Run the quality checks
+- [x] T023 [US4] - Run the quality checks
   - `gofmt -l .` prints nothing
   - `go vet ./...` passes
   - `go test ./...` passes
-- [ ] T024 [US4] - Try it by hand
+- [x] T024 [US4] - Try it by hand
   - Build: `go build -o bin/calc ./cmd/calc`
   - Run: `bin/calc 2 + 3`, `bin/calc '6 * 7'`, `bin/calc 8/0`
   - Run one session, end it with `quit`

@@ -219,3 +219,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
 - Human review, in rounds:
   1. Before starting, the AI asked for approval with the files, the expected failures, and the commit message. Result: `gofmt` and `go vet` clean; `go test ./...` fails in all 6 tests and all 136 cases (75 spec examples in `TestEvaluate`, 46 bad inputs in the no-result test, 8 one-shot cases, 7 session cases), every one on a wrong or missing answer, none on a build error. One decision is made by the tests, not the spec: the error for bad input lists its problems one per line, so the tests can compare the exact list. Each test case carries its requirement ID in its name, for example `TestEvaluate/FR-004/0.1_+_0.2`.
 - Takeaway for readers: When the spec is full of concrete examples, the tests almost write themselves: each example becomes one test case. Then check how they fail, not only that they fail: here all 136 cases failed on a wrong answer, and none on a build error, so each one is really checking something.
+
+## Step 17 · Implement (green) · tag: step-17-green
+- Goal: write the code that makes every red test pass, without changing a single test.
+- Command/prompt: `/speckit-implement Green commit only: tasks T006 to T008, T011 to T013, T015, T019 to T024. Do not change the tests. Write the code until all tests pass, then run the quality checks and try the program by hand.`
+- AI produced: `cmd/calc/calc.go` and `cmd/calc/cli.go` filled in, `cmd/calc/main.go`, `/bin/` in `.gitignore`; the last 13 tasks marked done in [`tasks.md`](../specs/001-basic-arithmetic/tasks.md).
+- Human review, in rounds:
+  1. Before starting, the AI asked for approval and explained the three checks the constitution requires (`gofmt`, `go vet`, `go test`). Result: all 136 test cases pass on the first run, with the test files unchanged; `gofmt` and `go vet` are clean; the program builds, and a run by hand matches the spec in both modes, including the error order for `1000 * abc` and an empty `x` for `x=$(calc 6/0)`.
+- Takeaway for readers: When the tests come from a detailed spec, writing the code becomes the easy part: here it passed all 136 cases on the first run. The hard thinking happened earlier, in clarify, plan, checklist, and analyze, where each decision cost a line of text instead of a code change.
