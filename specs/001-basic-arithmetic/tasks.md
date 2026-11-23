@@ -196,3 +196,17 @@ Added by `/speckit-converge`, which checks the finished code against the spec. E
   - Today only research [R4](research.md#r4--how-a-script-knows-whether-the-operation-worked) says it
   - Why: the constitution says every behavior and every test must trace to a requirement
   - Then put `FR-016` on `TestInteractiveReadFailure` in `cmd/calc/cli_test.go`
+
+## Convergence, second run
+
+Added by `/speckit-converge` on its second run, which also checks that every behavior traces back to a requirement. Each task below is something the code does, that the spec does not state yet.
+
+**Spec fix (its own commit)**
+
+- [ ] T026 [US4] - Extend functional requirements [FR-011](spec.md#functional-requirements) and [FR-012](spec.md#functional-requirements) in [`spec.md`](spec.md): where output goes and the exit codes
+  - One-shot: the typed pieces are joined with spaces ([R2](research.md#r2--typing-an-operation-in-one-shot-mode))
+  - One-shot: the result goes to normal output, the `Errors:` block to error output ([R3](research.md#r3--where-output-goes-in-one-shot-mode))
+  - One-shot: exit code 0 for a result, 1 for errors ([R4](research.md#r4--how-a-script-knows-whether-the-operation-worked))
+  - Session: everything goes to normal output; it ends with exit code 0
+  - Today only research says these; the code and tests already do them
+  - Why: the rule from Step 19, behavior a script can see needs a requirement

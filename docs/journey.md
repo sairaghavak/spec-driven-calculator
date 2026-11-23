@@ -255,3 +255,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
 - Human review, in rounds:
   1. The author approved the plan before work started. Result: FR-016 says `error reading input: <reason>` goes to the error output with a failure exit; US4 now covers it; R4 and the code comment link it; the test is now `TestFR016ReadFailure` and checks the exact message instead of "contains the reason". All 136 cases pass, `gofmt` and `go vet` are clean, and every test carries a requirement ID. The stricter test passed at once, without a red run: the code already wrote that exact message, so only the requirement and the check changed, not the behavior.
 - Takeaway for readers: When converge finds a traceability gap, fix the spec first and let the code follow. Here the spec gained one requirement and the test gained its ID; the code did not change, because the behavior was already right, just not written down.
+
+## Step 21 · Converge (second run) · tag: step-21-converge
+- Goal: confirm that the code, spec, plan, and tasks now agree, checking traceability in both directions as the Step 19 rule requires.
+- Command/prompt: `/speckit-converge`
+- AI produced: one finding and one appended task, T026, in [`tasks.md`](../specs/001-basic-arithmetic/tasks.md).
+- Human review, in rounds:
+  1. The second run was expected to be clean, but checking both directions found one gap: one-shot mode joins the typed pieces with spaces, sends errors to the error output, and exits with 0 or 1, and a session sends everything to normal output, yet only research R2 to R4 say so. FR-011 says only "show the result or the error" and "signal success or failure". The first run had counted that as enough; the Step 19 rule names exit codes and output explicitly, so it is not. The code and tests already behave this way; only the spec is missing it. The author approved committing the finding as task T026.
+- Takeaway for readers: Tightening a rule can surface gaps that an earlier, looser check accepted. That is the rule working, not a failure: re-run the check after every rule change, and expect it to find a little more.
