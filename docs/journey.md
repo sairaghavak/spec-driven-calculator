@@ -247,3 +247,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
   2. The author agreed to the order: commit Step 18, then this rule, then the T025 fix. Rules come before the work they govern, as in Step 15, so T025 is done under the rule.
   3. The author reviewed the rule text and accepted it as written, and asked for this entry to record the review in full.
 - Takeaway for readers: Traceability runs in two directions. Checking that every requirement has a test is not enough: also check that every test and every behavior points back to a requirement. Otherwise design notes quietly become behavior nobody approved.
+
+## Step 20 · Implement (FR-016) · tag: step-20-fr016
+- Goal: complete convergence task T025, so the read-failure behavior traces to a requirement, under the Step 19 rule.
+- Command/prompt: `/speckit-implement Convergence task T025 only: add FR-016 to spec.md for a failed input read, link it from research R4, put FR-016 on the read-failure test with an exact-message check, and recount the tasks summary.`
+- AI produced: FR-016 and an edge case in [`spec.md`](../specs/001-basic-arithmetic/spec.md); a link from research R4; the read-failure test renamed and made exact in `cmd/calc/cli_test.go`; T025 done and the summary recounted in [`tasks.md`](../specs/001-basic-arithmetic/tasks.md).
+- Human review, in rounds:
+  1. The author approved the plan before work started. Result: FR-016 says `error reading input: <reason>` goes to the error output with a failure exit; US4 now covers it; R4 and the code comment link it; the test is now `TestFR016ReadFailure` and checks the exact message instead of "contains the reason". All 136 cases pass, `gofmt` and `go vet` are clean, and every test carries a requirement ID. The stricter test passed at once, without a red run: the code already wrote that exact message, so only the requirement and the check changed, not the behavior.
+- Takeaway for readers: When converge finds a traceability gap, fix the spec first and let the code follow. Here the spec gained one requirement and the test gained its ID; the code did not change, because the behavior was already right, just not written down.

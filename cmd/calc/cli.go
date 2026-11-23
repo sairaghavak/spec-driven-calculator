@@ -43,7 +43,8 @@ func runOnce(input string, stdout, stderr io.Writer) int {
 }
 
 // runSession reads one operation per line until quit, exit, or the end of input (T020,
-// FR-012, FR-013). Everything goes to stdout; a read failure goes to stderr with exit code 1.
+// FR-012, FR-013). Everything goes to stdout; a read failure goes to stderr with exit code 1
+// (FR-016).
 func runSession(stdin io.Reader, stdout, stderr io.Writer) int {
 	fmt.Fprint(stdout, welcomeText)
 	lines := bufio.NewScanner(stdin)

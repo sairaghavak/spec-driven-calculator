@@ -123,6 +123,8 @@ was wrong and what is accepted. Multiplication accepts only operands strictly be
   ([FR-006](#functional-requirements)), digit limits ([FR-014](#functional-requirements)), multiplication limit ([FR-008](#functional-requirements)), division by zero ([FR-007](#functional-requirements)); within
   one kind, the left number comes before the right. A number that is not a number (including one with leading zeros) is not checked further; a number
   that breaks the digit limit is still checked for the multiplication limit and division by zero.
+- **FR-016**: If reading the input fails (for example, the input stream breaks), the calculator
+  MUST write `error reading input: <reason>` to the error output and exit signaling failure.
 
 ### Error messages
 
@@ -238,7 +240,7 @@ As a user, I want to run a single operation from the command line, or start a se
 several operations in a row, so that I can script the calculator or correct a mistake and try again
 without restarting.
 
-**Covers**: [FR-011](#functional-requirements), [FR-012](#functional-requirements), [FR-013](#functional-requirements)
+**Covers**: [FR-011](#functional-requirements), [FR-012](#functional-requirements), [FR-013](#functional-requirements), [FR-016](#functional-requirements)
 
 **Acceptance Criteria**:
 
@@ -305,6 +307,8 @@ without restarting.
 - One-shot mode started with `quit` or `exit`: not a command there; reported as a missing number
   ([FR-011](#functional-requirements), [FR-013](#functional-requirements)).
 - Interactive session, a line of only spaces: ignored, no error ([FR-013](#functional-requirements)).
+- Interactive session, reading the input fails: `error reading input: <reason>` on the error output,
+  exit signaling failure ([FR-016](#functional-requirements)).
 - `2 3 + 4`: rejected, with the expected form shown ([FR-001](#functional-requirements), [FR-005](#functional-requirements)).
 
 ## Key Entities

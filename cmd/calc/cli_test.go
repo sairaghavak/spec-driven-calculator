@@ -115,13 +115,13 @@ type failingReader struct{}
 
 func (failingReader) Read([]byte) (int, error) { return 0, errors.New("input stream broke") }
 
-// T018: if reading the input fails, the error goes to the error output and the exit code is 1
-// (research R4).
-func TestInteractiveReadFailure(t *testing.T) {
+// T018, T025, FR-016: if reading the input fails, the error goes to the error output and the
+// exit code is 1.
+func TestFR016ReadFailure(t *testing.T) {
 	var stdout, stderr bytes.Buffer
 	code := run(nil, failingReader{}, &stdout, &stderr)
-	if !strings.Contains(stderr.String(), "input stream broke") {
-		t.Errorf("stderr = %q; want it to contain the read error", stderr.String())
+	if want := "error reading input: input stream broke\n"; stderr.String() != want {
+		t.Errorf("stderr = %q; want %q", stderr.String(), want)
 	}
 	if code != 1 {
 		t.Errorf("exit code = %d; want 1", code)

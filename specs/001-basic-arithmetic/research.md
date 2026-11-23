@@ -83,7 +83,8 @@ Each decision uses Spec Kit's three fields:
   error then `failed` (`||` runs it only on a non-zero exit code). The code is not printed output:
   read it from `$?` right after the command, so `calc 6/0; echo $?` prints the error, then `1`.
   The interactive session ends with 0, or with 1 if reading the input itself fails (for example,
-  the input stream breaks); that failure is printed to error output.
+  the input stream breaks); that failure is printed to error output
+  ([FR-016](spec.md#functional-requirements)).
 - **Alternatives considered**: a different failure code for each error, for example 2 for a
   missing number and 3 for division by zero. We did not choose this. There is no need: it is just
   success or failure, 0 for success and 1 for failure. The error message says what went wrong.

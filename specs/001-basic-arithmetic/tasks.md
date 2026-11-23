@@ -26,15 +26,15 @@ Each user story lists its tasks, as in JIRA.
 
 All code goes in `cmd/calc/`.
 
-**Summary**: 4 user stories, 24 tasks (11 red, 13 green)
+**Summary**: 4 user stories, 25 tasks (11 red, 13 green, 1 convergence)
 
-| Story | Red commit | Green commit | Tasks |
-|---|---|---|---|
-| [US1](spec.md#us1--compute-a-basic-operation-p1) · Compute a basic operation | 5 | 3 | 8 |
-| [US2](spec.md#us2--get-an-informative-message-for-bad-input-p2) · Bad-input messages | 2 | 3 | 5 |
-| [US3](spec.md#us3--multiplication-operand-limit-p3) · Multiplication limit | 1 | 1 | 2 |
-| [US4](spec.md#us4--one-shot-and-interactive-modes-p4) · One-shot and session modes | 3 | 6 | 9 |
-| **Total** | **11** | **13** | **24** |
+| Story | Red commit | Green commit | Convergence | Tasks |
+|---|---|---|---|---|
+| [US1](spec.md#us1--compute-a-basic-operation-p1) · Compute a basic operation | 5 | 3 | 0 | 8 |
+| [US2](spec.md#us2--get-an-informative-message-for-bad-input-p2) · Bad-input messages | 2 | 3 | 0 | 5 |
+| [US3](spec.md#us3--multiplication-operand-limit-p3) · Multiplication limit | 1 | 1 | 0 | 2 |
+| [US4](spec.md#us4--one-shot-and-interactive-modes-p4) · One-shot and session modes | 3 | 6 | 1 | 10 |
+| **Total** | **11** | **13** | **1** | **25** |
 
 ## [US1](spec.md#us1--compute-a-basic-operation-p1) · Compute a basic operation
 
@@ -191,7 +191,7 @@ Added by `/speckit-converge`, which checks the finished code against the spec. E
 
 **Spec and test fix (its own commit)**
 
-- [ ] T025 [US4] - Add functional requirement [FR-016](spec.md#functional-requirements) to [`spec.md`](spec.md): what happens when reading the input fails
+- [x] T025 [US4] - Add functional requirement [FR-016](spec.md#functional-requirements) to [`spec.md`](spec.md): what happens when reading the input fails
   - The behavior: the error goes to the error output, exit code 1
   - Today only research [R4](research.md#r4--how-a-script-knows-whether-the-operation-worked) says it
   - Why: the constitution says every behavior and every test must trace to a requirement
