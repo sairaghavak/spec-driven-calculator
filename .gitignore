@@ -36,3 +36,6 @@ go.work.sum
 # Claude Code per-user settings (may hold permissions or tokens).
 # .claude/skills/ stays committed: the Spec Kit skills are part of this repo.
 .claude/settings.local.json
+
+# Built programs (go build -o bin/calc ./cmd/calc)
+/bin/
