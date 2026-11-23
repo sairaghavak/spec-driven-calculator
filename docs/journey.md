@@ -279,3 +279,16 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
 - Human review, in rounds:
   1. The author approved the run after the AI listed, behavior by behavior, which requirement each must trace to. The checks were run as commands, not judged by eye: the 15 active functional requirements and NFR-001 are exactly the IDs the tests cite; every test case carries one; no research decision appears in the code without a requirement beside it; only the standard library is imported; there are no `panic` calls; all 26 tasks are done; `gofmt` and `go vet` are clean; and 136 of 136 test cases pass. NFR-002 (messages a user can act on) was checked by review in Step 10, and FR-009 is retired.
 - Takeaway for readers: Converge until a run finds nothing, and make the final run mechanical: compare the list of requirements with the IDs the tests cite, using commands. Three runs here found two real gaps that every earlier review, by people and by the AI, had missed.
+
+## Step 24 · README · tag: step-24-readme
+- Goal: give visitors a front page that explains the repo, how to run it, and how to follow the journey, readable on a phone.
+- Command/prompt: the AI proposed a README after Step 23; the author's first instruction on it: "Update what the author changed to "what sairaghavak(link to github profile) changed and reviewed multiple times and challenged the requirements""
+- AI produced: [`README.md`](../README.md)
+- Human review, in rounds:
+  1. The author's role is named and linked to their GitHub profile wherever it applies: the intro, the journey entry ("validated, reviewed, and constantly challenged the AI-generated specs"), [`CLAUDE.md`](../CLAUDE.md) ("how sairaghavak instructed the AI"), and the rule steps.
+  2. The feature folder was described with every Spec Kit phase it went through; a per-file list of which step changed each file was added, then removed as a duplicate of the steps list.
+  3. The steps went from a table grouped by phase (where Step 07 looked missing) to one entry per step, in order, each linked to its journey entry and its commit, with the Spec Kit command and the files it changed. Every fact comes from git, not typed by hand.
+  4. Prerequisites now name Go 1.27 or later and Git, with a clone step.
+  5. For phones, both tables became lists: GitHub tables cannot hold list items and need sideways scrolling on a narrow screen.
+  6. The author asked to see it on GitHub before approving, so it went up as a draft pull request.
+- Takeaway for readers: Generate a README's facts from the repo itself (tags, commits, changed files) instead of typing them, so it cannot drift from the history it describes. And check it on a phone: many people will open the link there first.
