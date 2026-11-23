@@ -99,6 +99,8 @@ Done when the tests show every bad input gets the spec's exact messages, in orde
   - Every other error edge case in the spec
 - [ ] T010 [US2] - Write the no-answer test in `cmd/calc/calc_test.go`
   - Every bad input returns no answer
+  - And an error that lists its problems
+  - Checking both makes it fail before the code exists
 
 **Code (green commit)**
 
