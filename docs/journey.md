@@ -174,3 +174,13 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
   6. The author asked for a quick summary of the numbers before the tasks. A table now shows 4 user stories and 24 tasks (11 in the red commit, 13 in the green), per story: US1 8, US2 5, US3 2, US4 9. The counts come from a script over the task lines, not by hand. The preference went into both the author's user-level settings and [`CLAUDE.md`](../CLAUDE.md).
 - Takeaway for readers: A task list is read by people, so write it in a shape they already know (here, JIRA stories and tasks) and put the numbers on top. Then check that each task is in the right place: a quick test run showed that two setup tasks did not belong in the red commit.
 
+## Step 12 · Process rules · tag: step-12-task-rules
+- Goal: write down the rules learned in the tasks review, so the next feature's `tasks.md` starts in the right shape.
+- Command/prompt: "If possible add this CLAUDE.md as my preference"
+- AI produced: [`CLAUDE.md`](../CLAUDE.md), four rules:
+  - Write every sentence for the author to read once and understand, not only for the AI to parse.
+  - The `tasks.md` layout: `- [ ] T006 [US1] - Short title` lines with short sub-bullets; every task in a user story; "Tests (red commit)" and "Code (green commit)" lists; no FR or research references in tasks.
+  - `tasks.md` opens with a summary of stories and tasks per commit, counted by a script.
+  - The red commit holds the tests plus only what they need to run and fail on a wrong answer.
+- Human review: accepted as-is. The same preferences, in general form, went into the author's user-level Claude settings, outside this repo.
+- Takeaway for readers: Each time you correct the AI on the shape of a document, add the correction to its instructions file before moving on. Six review rounds on one `tasks.md` became four lines that the next feature gets for free.
