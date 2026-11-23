@@ -184,3 +184,15 @@ Done when `calc 6*7` prints `42`, and a session with `2+3` shows `Result: 5`.
   - Build: `go build -o bin/calc ./cmd/calc`
   - Run: `bin/calc 2 + 3`, `bin/calc '6 * 7'`, `bin/calc 8/0`
   - Run one session, end it with `quit`
+
+## Convergence
+
+Added by `/speckit-converge`, which checks the finished code against the spec. Each task below is something the code does not fully meet yet.
+
+**Spec and test fix (its own commit)**
+
+- [ ] T025 [US4] - Add functional requirement [FR-016](spec.md#functional-requirements) to [`spec.md`](spec.md): what happens when reading the input fails
+  - The behavior: the error goes to the error output, exit code 1
+  - Today only research [R4](research.md#r4--how-a-script-knows-whether-the-operation-worked) says it
+  - Why: the constitution says every behavior and every test must trace to a requirement
+  - Then put `FR-016` on `TestInteractiveReadFailure` in `cmd/calc/cli_test.go`
