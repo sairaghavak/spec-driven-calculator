@@ -51,6 +51,14 @@ A public demo of spec-driven development using GitHub Spec Kit and Claude Code, 
 ## Commits, branches, tags
 - Conventional Commits: `docs:`, `docs(spec):`, `docs(plan):`, `docs(tasks):`, `test:`, `feat:`, `chore:`, `refactor:`.
 - One commit per phase, except implement, which is test-first and produces two: a red commit (failing tests) then a green commit (passing). The red commit holds the tests plus only what they need to run and fail on a wrong answer (the module file and empty versions of the functions they call); everything else waits for the green commit. So each feature has 9 phase commits and 9 tags, plus one per process step (see Workflow).
+- Implement commits (red and green) name the user stories they cover in the subject, and list their task IDs grouped by story on a `Tasks:` line after the one line of why. Example:
+  ```
+  test: add failing tests for US1 to US4 of feature 001
+
+  Tests come first: they turn the spec into checks that must fail before any code exists.
+
+  Tasks: US1 T001-T005, US2 T009-T010, US3 T014, US4 T016-T018
+  ```
 - Every step gets an annotated tag `step-NN-<slug>` (two-digit, monotonic across features) whose message is the step's one-line summary.
 - `main` changes only through pull requests: one branch and one PR per unit of work. Setup steps (00 to 02) live on `000-project-setup`; each feature gets a branch named after its spec folder (`git checkout -b 001-basic-arithmetic` for `specs/001-basic-arithmetic/`).
 - Merge PRs with GitHub's "Create a merge commit" only (the same as `git merge --no-ff`). Never squash or rebase: both leave the step tags pointing at commits that are not on `main`, and rebase drops the author's signatures. The merge commit is not a phase, so it gets no tag.

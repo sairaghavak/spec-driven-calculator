@@ -203,3 +203,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
   2. The AI first proposed folding this fix into the red commit. The author asked whether that meant correcting tasks inside the implement step; it did, and that mixes two phases. [`CLAUDE.md`](../CLAUDE.md) says to fix the earlier artifact first and rerun the phases after it, so the fix became its own step, like the Step 06 spec amendment.
   3. Re-check, as analyze would after a tasks change: every other test task already fails against the empty code (wrong answer, nothing printed, or exit code without the expected output), and the task counts are unchanged.
 - Takeaway for readers: Before writing tests, ask of each one: would it pass against empty code? If yes, it proves nothing yet. Finding that in the task list costs one line; finding it after the red commit costs a rewrite.
+
+## Step 15 · Process rule · tag: step-15-commit-stories
+- Goal: make implement commits readable by user story before the first one is written.
+- Command/prompt: "In the commit message shouldn't it has a user story mentioned?"
+- AI produced: [`CLAUDE.md`](../CLAUDE.md), one rule with an example: implement commits name their user stories in the subject and list task IDs grouped by story on a `Tasks:` line.
+- Human review, in rounds:
+  1. The AI's planned red-commit message cited only task IDs. The author asked for the user stories; a reader of `git log`, the PR, or the demo thinks in stories, not task numbers. The AI proposed collecting the rule in a process step after converge; the author asked to add it first, so the commits that follow it are written to it from the start.
+- Takeaway for readers: Settle the format of a commit message before the commit exists. A rule written after the fact leaves the first examples of the history out of line with it.
