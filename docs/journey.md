@@ -300,3 +300,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
 - Human review, in rounds:
   1. GitHub counts bytes per language. Spec Kit's six helper scripts in `.specify/scripts/bash/` are 75,373 bytes of shell; the calculator is 23,630 bytes of Go, so GitHub labeled the repo Shell. Marking `.specify/` as `linguist-vendored`, GitHub's standard way to say "third-party code shipped with the repo", leaves it out of the count; the scripts stay and Spec Kit works the same. The author approved the change as its own step.
 - Takeaway for readers: When a framework ships its own scripts into your repo, mark them as vendored with a one-line `.gitattributes` rule. Otherwise the tool's code can outweigh yours, and the repo is labeled with the wrong language.
+
+## Step 26 · README scope · tag: step-26-readme-scope
+- Goal: keep the README's list of steps accurate without editing it after every new step.
+- Command/prompt: "README update is not required right"
+- AI produced: one sentence in [`README.md`](../README.md), at the start of "The steps".
+- Human review, in rounds:
+  1. The author asked whether the README needed updating after Steps 24 and 25. It did: its list ended at Step 23. Adding 24 and 25 would have started a loop, since each README edit is itself a new step to list. Instead the list now says what it covers, the steps that built feature 001, and points to the journey for later steps that maintain the repo. The author approved this as its own step on the same pull request as Step 25.
+- Takeaway for readers: A summary that lists every change goes stale with the next change. Give it a clear scope and point to the full log for everything after it.

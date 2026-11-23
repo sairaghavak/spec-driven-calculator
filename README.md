@@ -43,7 +43,7 @@ git checkout step-16-red    # the failing tests, before any calculator code
 
 ## The steps
 
-In order. Each step links to its journey entry, and each commit link shows exactly what changed.
+The steps that built feature 001, in order. Steps after 23 maintain the repo itself (for example, this README and the language stats) and are listed in the [journey](docs/journey.md). Each step links to its journey entry, and each commit link shows exactly what changed.
 Rule steps turned [sairaghavak](https://github.com/sairaghavak)'s review feedback into written rules for the AI.
 Short file names are in [`specs/001-basic-arithmetic/`](specs/001-basic-arithmetic/) (documents) or [`cmd/calc/`](cmd/calc/) (code).
 Every step also adds its own journey entry, so the journey is not listed.
