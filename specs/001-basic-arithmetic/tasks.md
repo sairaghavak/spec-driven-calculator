@@ -21,6 +21,7 @@ Each user story lists its tasks, as in JIRA.
 **Two commits**
 
 - **Red commit**: every "Tests" task, plus the minimum setup the tests need to run. The tests fail, because the code is not written yet.
+- Every test case carries the ID of the requirement it checks (for example `FR-004`), in the test code. The ID is part of the test's name, so `go test -v` shows it. The constitution requires this.
 - **Green commit**: every "Code" task and the final checks. The tests pass.
 
 All code goes in `cmd/calc/`.
@@ -70,7 +71,7 @@ Done when the tests show `2 + 3` gives `5` and `0.1 + 0.2` gives `0.3`.
 - [ ] T006 [US1] - Split the input into numbers and operators in `cmd/calc/calc.go`
   - Spaces and tabs separate the pieces
   - `+ - * /` are operators
-  - A `-` right before a number, at the start or after the operator, is its sign
+  - A `-` right before a number or word, at the start or after the operator, is its sign
 - [ ] T007 [US1] - Read each number in `cmd/calc/calc.go`
   - Accept only the number format in the spec
   - Store it as an exact fraction (`math/big.Rat`)
@@ -108,7 +109,7 @@ Done when the tests show every bad input gets the spec's exact messages, in orde
   - Follow the spec's "Which shape message is shown" table
   - Exactly one message
 - [ ] T013 [US2] - Check each number in `cmd/calc/calc.go`
-  - Left number first, then right
+  - Check by kind, in this order; within each kind, left number before right
   - First: is it a number, without leading zeros? If not, stop checking it
   - Then: at most 3 digits before and 2 after the point
   - Then: division by zero

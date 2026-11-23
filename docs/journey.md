@@ -184,3 +184,12 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
   - The red commit holds the tests plus only what they need to run and fail on a wrong answer.
 - Human review: accepted as-is. The same preferences, in general form, went into the author's user-level Claude settings, outside this repo.
 - Takeaway for readers: Each time you correct the AI on the shape of a document, add the correction to its instructions file before moving on. Six review rounds on one `tasks.md` became four lines that the next feature gets for free.
+
+## Step 13 · Analyze · tag: step-13-analyze
+- Goal: check that the spec, plan, and tasks agree with each other and with the constitution, before any code is written.
+- Command/prompt: `/speckit-analyze`
+- AI produced: a read-only report (in the session, not a file): 3 findings, 0 critical; 15 of 16 requirements covered by tasks.
+- Human review, in rounds:
+  1. The author approved all three fixes, each one line in [`tasks.md`](../specs/001-basic-arithmetic/tasks.md). F1 (high): T013 said "left number first, then right" before the kinds of check, which reads as checking all of the left number first; FR-015 orders by kind first, so `1000 * abc` would have listed its errors in the wrong order. It now says "by kind, in this order; within each kind, left number before right". C1 (high): only one test task said tests must name their requirement, which the constitution requires of every test; one line in the opening now covers all of them. F2 (medium): T006 said a `-` before a "number" is a sign; FR-001 says "number or word", which is why `-abc` is reported as not a number.
+  2. The author asked where "every test names its requirement" shows up: in the commit messages or the code. In the test code, on every test case: each example carries its requirement ID, which is part of the test's name, so `go test -v` prints it (`TestEvaluate/FR-004/...`). Commits cite task IDs instead. The line in `tasks.md` now says where.
+- Takeaway for readers: Run the cross-check even after careful reviews. The six review rounds in Step 11 made the tasks readable, but only a check against the spec found that one short line had reversed the order of error messages. Readable and correct are two different checks.
