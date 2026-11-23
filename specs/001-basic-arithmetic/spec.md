@@ -12,6 +12,9 @@
 > The description above does not limit how many operands a calculation takes. This spec does:
 > **exactly two operands** (`2 * 10` is supported, `2 * 10 + 15 - 50` is not). See Scope.
 
+**Story priority**: the `(P1)` to `(P4)` after each [user story](#user-stories) name is its
+priority. P1 matters most and is built first; P4 matters least and is built last.
+
 ## Summary
 
 A command-line calculator that adds, subtracts, multiplies, and divides two numbers, either once
