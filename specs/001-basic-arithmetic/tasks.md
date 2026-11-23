@@ -42,26 +42,26 @@ Done when the tests show `2 + 3` gives `5` and `0.1 + 0.2` gives `0.3`.
 
 **Setup and tests (red commit)**
 
-- [ ] T001 [US1] - Create `go.mod`
+- [x] T001 [US1] - Create `go.mod`
   - Module `github.com/sairaghavak/spec-driven-calculator`
   - Go version `1.27`
   - Needed: without it, no test runs
-- [ ] T002 [US1] - Create an empty calculator in `cmd/calc/calc.go`
+- [x] T002 [US1] - Create an empty calculator in `cmd/calc/calc.go`
   - `func Evaluate(input string) (string, error)`
   - Returns no answer and a "not implemented" error
   - Needed: without it, the tests do not build
-- [ ] T003 [US1] - Create an empty command-line runner in `cmd/calc/cli.go`
+- [x] T003 [US1] - Create an empty command-line runner in `cmd/calc/cli.go`
   - `func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int`
   - Prints nothing, returns `1`
   - Needed: the one-shot and session tests call it
-- [ ] T004 [US1] - Write the compute tests in `cmd/calc/calc_test.go`
+- [x] T004 [US1] - Write the compute tests in `cmd/calc/calc_test.go`
   - One test, `TestEvaluate`, runs a list of examples
   - Each example has: the input, the expected answer or errors, and the requirement it checks
   - Examples: every US1 acceptance criterion
   - Examples: spaces, tabs, and signs (`2+3`, `-3-2`, `5*-2`, `5--3`)
   - Examples: rounding (`0.1 + 0.2`, `1 / 3`, `0.01 / 16`, `0 * -5`)
   - Examples: the other result edge cases in the spec
-- [ ] T005 [US1] - Write the speed test in `cmd/calc/calc_test.go`
+- [x] T005 [US1] - Write the speed test in `cmd/calc/calc_test.go`
   - Runs every `TestEvaluate` example
   - Fails if any answer is wrong
   - Fails if all of them together take 1 second or more
@@ -87,7 +87,7 @@ Done when the tests show every bad input gets the spec's exact messages, in orde
 
 **Tests (red commit)**
 
-- [ ] T009 [US2] - Write the error tests in `cmd/calc/calc_test.go`
+- [x] T009 [US2] - Write the error tests in `cmd/calc/calc_test.go`
   - Add examples to `TestEvaluate`, each with its exact expected messages
   - Every US2 acceptance criterion
   - Every row of the spec's "Which shape message is shown" table
@@ -97,7 +97,7 @@ Done when the tests show every bad input gets the spec's exact messages, in orde
   - Division by zero: `5 / 0`, `5 / -0`, `5 / 0.000`
   - Several errors at once: `abc / 0`, `1000 * abc`
   - Every other error edge case in the spec
-- [ ] T010 [US2] - Write the no-answer test in `cmd/calc/calc_test.go`
+- [x] T010 [US2] - Write the no-answer test in `cmd/calc/calc_test.go`
   - Every bad input returns no answer
   - And an error that lists its problems
   - Checking both makes it fail before the code exists
@@ -123,7 +123,7 @@ Done when the tests show `199 * 199` gives `39601` and `200 * 200` gives two lim
 
 **Tests (red commit)**
 
-- [ ] T014 [US3] - Write the multiplication tests in `cmd/calc/calc_test.go`
+- [x] T014 [US3] - Write the multiplication tests in `cmd/calc/calc_test.go`
   - Add examples to `TestEvaluate`
   - Every US3 acceptance criterion
   - Edge cases: `199.5 * 2`, `-200 * 2`, `-199 * 199`, `1000 * 5`
@@ -141,13 +141,13 @@ Done when `calc 6*7` prints `42`, and a session with `2+3` shows `Result: 5`.
 
 **Tests (red commit)**
 
-- [ ] T016 [US4] - Write the one-shot tests in `cmd/calc/cli_test.go`
+- [x] T016 [US4] - Write the one-shot tests in `cmd/calc/cli_test.go`
   - `calc 2 + 3` and `calc 2+3`: print `5`, exit code 0
   - `calc '6 * 7'`: prints `42`
   - `calc 8/0`: `Errors:` block on the error output only, exit code 1
   - `calc ""`: the nothing-entered message
   - `calc quit`: the missing-number message
-- [ ] T017 [US4] - Write the session tests in `cmd/calc/cli_test.go`
+- [x] T017 [US4] - Write the session tests in `cmd/calc/cli_test.go`
   - Compare the whole screen output, exactly
   - The six-line welcome
   - `2+3`: `Result: 5`, the `-` line, `Please enter your input.`
@@ -155,7 +155,7 @@ Done when `calc 6*7` prints `42`, and a session with `2+3` shows `Result: 5`.
   - `6 * 7`: `Result: 42`
   - `quit`, `exit`, `  quit  `, or end of input: ends quietly, exit code 0
   - Blank lines and lines of only spaces: nothing printed
-- [ ] T018 [US4] - Write the read-failure test in `cmd/calc/cli_test.go`
+- [x] T018 [US4] - Write the read-failure test in `cmd/calc/cli_test.go`
   - Reading the keyboard input fails
   - The error goes to the error output, exit code 1
 

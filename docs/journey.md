@@ -211,3 +211,11 @@ In this log, "the author" is the repo owner, [sairaghavak](https://github.com/sa
 - Human review, in rounds:
   1. The AI's planned red-commit message cited only task IDs. The author asked for the user stories; a reader of `git log`, the PR, or the demo thinks in stories, not task numbers. The AI proposed collecting the rule in a process step after converge; the author asked to add it first, so the commits that follow it are written to it from the start.
 - Takeaway for readers: Settle the format of a commit message before the commit exists. A rule written after the fact leaves the first examples of the history out of line with it.
+
+## Step 16 · Implement (red) · tag: step-16-red
+- Goal: turn every spec example into a test, and see each one fail before any calculator code exists.
+- Command/prompt: `/speckit-implement Red commit only: tasks T001 to T005, T009, T010, T014, T016 to T018. Write the setup and the tests, run them, and stop when they fail on wrong answers. Do not write any code from the green tasks.`
+- AI produced: `go.mod`; `cmd/calc/calc.go` and `cmd/calc/cli.go` with empty functions; `cmd/calc/calc_test.go` and `cmd/calc/cli_test.go`; 11 tasks marked done in [`tasks.md`](../specs/001-basic-arithmetic/tasks.md).
+- Human review, in rounds:
+  1. Before starting, the AI asked for approval with the files, the expected failures, and the commit message. Result: `gofmt` and `go vet` clean; `go test ./...` fails in all 6 tests and all 136 cases (75 spec examples in `TestEvaluate`, 46 bad inputs in the no-result test, 8 one-shot cases, 7 session cases), every one on a wrong or missing answer, none on a build error. One decision is made by the tests, not the spec: the error for bad input lists its problems one per line, so the tests can compare the exact list. Each test case carries its requirement ID in its name, for example `TestEvaluate/FR-004/0.1_+_0.2`.
+- Takeaway for readers: When the spec is full of concrete examples, the tests almost write themselves: each example becomes one test case. Then check how they fail, not only that they fail: here all 136 cases failed on a wrong answer, and none on a build error, so each one is really checking something.
