@@ -75,6 +75,7 @@ text stays the same.
 
 | Where in feature 001 | Old text | New text |
 |---|---|---|
+| List of operators in the input rule ([FR-001](../001-basic-arithmetic/spec.md#functional-requirements) of feature 001) and in [US2](../001-basic-arithmetic/spec.md#us2--get-an-informative-message-for-bad-input-p2) criterion 2 | `+`, `-`, `*`, `/` | `+`, `-`, `*`, `/`, `%` |
 | Welcome message, third line ([FR-012](../001-basic-arithmetic/spec.md#functional-requirements) of feature 001) | `Operations: +, -, *, /` | `Operations: +, -, *, /, %` |
 | End of all six input-shape messages ([Error messages](../001-basic-arithmetic/spec.md#error-messages) of feature 001) | `where <operator> is one of +, -, *, /` | `where <operator> is one of +, -, *, /, %` |
 | Example of an unknown operator ([Error messages](../001-basic-arithmetic/spec.md#error-messages), [Which shape message is shown](../001-basic-arithmetic/spec.md#which-shape-message-is-shown), and [US2](../001-basic-arithmetic/spec.md#us2--get-an-informative-message-for-bad-input-p2) criterion 2 of feature 001) | `4 % 2` | `4 ^ 2` |
