@@ -36,7 +36,7 @@ its own message, and a right number of 0 is division by zero. Every rule of
   1. **Result**: the remainder after dividing the left number by the right one, with minus signs
      ignored. `7 % 3` gives `1` and `4 % 2` gives `0`; `-7 % 3`, `7 % -3`, and `-7 % -3` all give
      `1`. The result is never negative.
-  2. **Whole numbers only**: a number written with a decimal point, on either side, MUST be
+  2. **Whole numbers only**: a number written with a decimal point, on either side of `%`, MUST be
      rejected with the whole-number message, even when its value is whole: `7.5 % 10`,
      `10 % 7.5`, and `7.0 % 2` are all rejected.
   3. **Zero on the right**: a right number whose value is 0 (`0` or `-0`) MUST be rejected with
@@ -78,7 +78,7 @@ text stays the same.
 | List of operators in the input rule ([FR-001](../001-basic-arithmetic/spec.md#functional-requirements) of feature 001) and in [US2](../001-basic-arithmetic/spec.md#us2--get-an-informative-message-for-bad-input-p2) criterion 2 | `+`, `-`, `*`, `/` | `+`, `-`, `*`, `/`, `%` |
 | Welcome message, third line ([FR-012](../001-basic-arithmetic/spec.md#functional-requirements) of feature 001) | `Operations: +, -, *, /` | `Operations: +, -, *, /, %` |
 | End of all six input-shape messages ([Error messages](../001-basic-arithmetic/spec.md#error-messages) of feature 001) | `where <operator> is one of +, -, *, /` | `where <operator> is one of +, -, *, /, %` |
-| Example of an unknown operator ([Error messages](../001-basic-arithmetic/spec.md#error-messages), [Which shape message is shown](../001-basic-arithmetic/spec.md#which-shape-message-is-shown), and [US2](../001-basic-arithmetic/spec.md#us2--get-an-informative-message-for-bad-input-p2) criterion 2 of feature 001) | `4 % 2` | `4 ^ 2` |
+| Example of an unknown operator ([Error messages](../001-basic-arithmetic/spec.md#error-messages), [Which shape message is shown](../001-basic-arithmetic/spec.md#which-shape-message-is-shown), and [US2](../001-basic-arithmetic/spec.md#us2--get-an-informative-message-for-bad-input-p2) criterion 2 of feature 001) | `4 % 2`, naming `%` | `4 ^ 2`, naming `^` |
 
 The new welcome line has 25 characters, still fewer than the 59 of the second line, so the `=` and
 `-` lines stay 59 characters long.
@@ -147,6 +147,7 @@ whether one number divides another, or see what is left over, without working it
   ([FR-001](#functional-requirements) rule 5).
 - `7.5 % 0`: the whole-number message for `7.5`, then division by zero ([FR-001](#functional-requirements) rule 5).
 - `7 % 0.0`: the whole-number message for `0.0`, then division by zero ([FR-001](#functional-requirements) rules 3 and 5).
+- `7.5 + 1`: shows `8.5`; the whole-number rule is for `%` only ([FR-001](#functional-requirements) rule 2).
 - `7 % 3 % 2`: only the too-many-numbers message ([FR-001](#functional-requirements) rule 4).
 - `50%`: only the missing-number message ([FR-001](#functional-requirements) rule 4).
 
@@ -165,8 +166,9 @@ N/A: `%` adds no new data. The entities are feature 001's: operation, result, an
   all messages for the left number before any for the right, would break that existing rule.
 - "Whole number" depends on how the number is written, not on its value: any decimal point makes it
   not whole, so `7.0` and `0.000` are rejected (from the author's `7.0 % 2` example).
-- In one-shot mode, `%` needs no quotes in common shells such as bash, unlike `*` (see the note in
-  feature 001's [US3](../001-basic-arithmetic/spec.md#us3--multiplication-operand-limit-p3)).
+- In one-shot mode, `%` needs no quotes in bash, the shell the demo uses, unlike `*` (see the note
+  in feature 001's [US3](../001-basic-arithmetic/spec.md#us3--multiplication-operand-limit-p3)).
+  Checked by running it; other shells were not checked.
 
 ## Definition of Done
 
