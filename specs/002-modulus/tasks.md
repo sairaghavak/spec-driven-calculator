@@ -63,32 +63,32 @@ Done when the tests show `-7 % 3` gives `1`, `5 % 0.000` gives its three message
 
 **Code (green commit)**
 
-- [ ] T005 [US1] - Split the input at `%` in `cmd/calc/calc.go`
+- [x] T005 [US1] - Split the input at `%` in `cmd/calc/calc.go`
   - `%` is an operator, like `+ - * /`, with or without spaces around it
   - Update the comment that lists the operators
-- [ ] T006 [US1] - Add the whole-number check in `cmd/calc/calc.go`
+- [x] T006 [US1] - Add the whole-number check in `cmd/calc/calc.go`
   - Only for `%`
   - A number whose text has a decimal point is not whole; check the text, not the value
   - Runs after the digit limit and before division by zero; left number before right
   - Checks every number with the right format, including one over the digit limit
   - Use the exact message from the spec
-- [ ] T007 [US1] - Check division by zero for `%` in `cmd/calc/calc.go`
+- [x] T007 [US1] - Check division by zero for `%` in `cmd/calc/calc.go`
   - Same check and message as for `/`
   - Also when the right number failed the whole-number check, as in `5 % 0.000`
-- [ ] T008 [US1] - Compute the remainder in `cmd/calc/calc.go`
+- [x] T008 [US1] - Compute the remainder in `cmd/calc/calc.go`
   - Drop both minus signs, then take the remainder (`big.Int.Rem`)
   - Only whole numbers, with a right number other than 0, reach this step
-- [ ] T009 [US1] - Add `%` to the expected-form hint in `cmd/calc/calc.go`
+- [x] T009 [US1] - Add `%` to the expected-form hint in `cmd/calc/calc.go`
   - The hint ends `where <operator> is one of +, -, *, /, %`
   - All six input-shape messages use it
-- [ ] T010 [US1] - Add `%` to the welcome in `cmd/calc/cli.go`
+- [x] T010 [US1] - Add `%` to the welcome in `cmd/calc/cli.go`
   - Third line: `Operations: +, -, *, /, %`
   - The other five lines stay the same
-- [ ] T011 [US1] - Run the quality checks
+- [x] T011 [US1] - Run the quality checks
   - `gofmt -l .` prints nothing
   - `go vet ./...` passes
   - `go test ./...` passes, feature 001's tests included
-- [ ] T012 [US1] - Try it by hand
+- [x] T012 [US1] - Try it by hand
   - Build: `go build -o bin/calc ./cmd/calc`
   - Run: `bin/calc 7 % 3` prints `1`; `bin/calc -7 % 3` prints `1`; `bin/calc 7.5 % 10` prints the whole-number message, exit code 1
   - Run one session: the welcome lists `%`; enter `4 ^ 2`, then `quit`

@@ -6,8 +6,9 @@ import (
 	"strings"
 )
 
-// Message texts from the spec's "Error messages" table (FR-005 to FR-008, FR-014).
-const formHint = "expected <number> <operator> <number>, where <operator> is one of +, -, *, /"
+// Message texts from the spec's "Error messages" table (FR-005 to FR-008, FR-014). The operator
+// list includes %, as feature 002's table of changed texts says (T009).
+const formHint = "expected <number> <operator> <number>, where <operator> is one of +, -, *, /, %"
 
 const (
 	errNothingEntered = "no operation was entered; " + formHint
@@ -57,8 +58,8 @@ func Evaluate(input string) (string, error) {
 }
 
 // split breaks the input into words and operators (T006, FR-001). Spaces and tabs separate
-// pieces; + - * / are operators. A - written directly before a word, at the start or right
-// after an operator, is that word's sign.
+// pieces; + - * / % are operators (% from feature 002's T005). A - written directly before a
+// word, at the start or right after an operator, is that word's sign.
 func split(input string) []piece {
 	var raw []piece
 	wordStart := -1
@@ -72,7 +73,7 @@ func split(input string) []piece {
 		switch c := input[i]; c {
 		case ' ', '\t':
 			endWord(i)
-		case '+', '-', '*', '/':
+		case '+', '-', '*', '/', '%':
 			endWord(i)
 			raw = append(raw, piece{text: string(c), isOperator: true, start: i, end: i + 1})
 		default:
@@ -163,8 +164,18 @@ func checkNumbers(left, op, right string) ([2]*big.Rat, []string) {
 			}
 		}
 	}
-	// 4. Division by zero (FR-007).
-	if op == "/" && values[1] != nil && values[1].Sign() == 0 {
+	// 4. Whole numbers, only for % (002/FR-001 rule 2, feature 002's T006): a number written with
+	// a decimal point is not whole, even 7.0. Also for numbers that broke the digit limit.
+	if op == "%" {
+		for i, t := range texts {
+			if values[i] != nil && strings.Contains(t, ".") {
+				problems = append(problems, `"`+t+`" is not a whole number; % accepts only whole numbers like 7 or 10`)
+			}
+		}
+	}
+	// 5. Division by zero (FR-007), also for % (feature 002's T007), even when the right number
+	// is not whole, as in 5 % 0.000.
+	if (op == "/" || op == "%") && values[1] != nil && values[1].Sign() == 0 {
 		problems = append(problems, errDivideByZero)
 	}
 	return values, problems
@@ -184,7 +195,8 @@ func withinDigitLimits(number string) bool {
 	return len(whole) <= 3 && len(fraction) <= 2
 }
 
-// compute applies the operator exactly (T008, FR-002). Division by zero never reaches here.
+// compute applies the operator exactly (T008, FR-002). Division by zero never reaches here,
+// and % gets only whole numbers.
 func compute(a *big.Rat, op string, b *big.Rat) *big.Rat {
 	r := new(big.Rat)
 	switch op {
@@ -194,6 +206,12 @@ func compute(a *big.Rat, op string, b *big.Rat) *big.Rat {
 		r.Sub(a, b)
 	case "*":
 		r.Mul(a, b)
+	case "%":
+		// Drop both minus signs, then take the remainder (002/FR-001 rule 1, feature 002's
+		// T008). Whole numbers are stored as n/1, so the numerator is the number.
+		x := new(big.Int).Abs(a.Num())
+		y := new(big.Int).Abs(b.Num())
+		r.SetInt(new(big.Int).Rem(x, y))
 	default:
 		r.Quo(a, b)
 	}
