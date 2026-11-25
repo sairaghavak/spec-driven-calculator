@@ -1,10 +1,27 @@
 # spec-driven-calculator
 
-A small Go calculator, built step by step by [sairaghavak](https://github.com/sairaghavak) with
-[GitHub Spec Kit](https://github.com/github/spec-kit) and Claude Code, to show spec-driven development from the first requirement to tested code.
+Learn spec-driven development (SDD) by example. This repo builds a small Go command-line calculator
+with [GitHub Spec Kit](https://github.com/github/spec-kit) and [Claude Code](https://claude.com/claude-code),
+one phase at a time, from the first requirement to tested code. Built by
+[sairaghavak](https://github.com/sairaghavak).
 
 The calculator is simple on purpose. The point is the process: every behavior starts as a written
 requirement, becomes a test, and only then becomes code.
+
+## Who this is for
+
+- Developers who want to see spec-driven development on a real project, not only read about it.
+- Anyone trying GitHub Spec Kit who wants to see what each phase produces: specify, clarify, plan,
+  checklist, tasks, analyze, implement, converge.
+- Anyone using an AI coding agent who wants it to follow written specs and tests instead of guessing.
+
+## What you'll see
+
+- Each phase as one signed commit with a git tag, so you can check out the repo at any step.
+- What the AI produced at each step, what the human changed, and why.
+- Mistakes the process caught, for example a planned test that could never fail before the code
+  existed ([Step 33](docs/journey.md#step-33--analyze--tag-step-33-analyze)).
+- A second feature, `%` for the remainder, that changes texts of the first, and how its spec records that.
 
 ## Try it
 
@@ -22,15 +39,16 @@ bin/calc 2 + 3          # 5
 bin/calc 0.1 + 0.2      # 0.3, exactly
 bin/calc '6 * 7'        # 42 (quote * when it has spaces around it)
 bin/calc 8/0            # Errors: division by zero is not allowed (exit code 1)
+bin/calc -7 % 3         # 1 (remainder; minus signs are ignored)
 bin/calc                # interactive session; type quit to leave
 ```
 
-Run the tests: `go test ./...` (136 cases, each naming the requirement it checks).
+Run the tests: `go test ./...` (186 cases after feature 002, each naming the requirement it checks).
 
 ## How to read this repo
 
 - [`docs/journey.md`](docs/journey.md): every step, with the command, what the AI produced, how [sairaghavak](https://github.com/sairaghavak) validated, reviewed, and constantly challenged the AI-generated specs, what changed as a result, and a takeaway.
-- [`specs/001-basic-arithmetic/`](specs/001-basic-arithmetic/): the feature's documents, one or more per Spec Kit phase. [The steps](#the-steps) shows which step changed which file.
+- [`specs/001-basic-arithmetic/`](specs/001-basic-arithmetic/) and [`specs/002-modulus/`](specs/002-modulus/): each feature's documents, one or more per Spec Kit phase. For feature 001, [The steps](#the-steps) shows which step changed which file.
 - [`.specify/memory/constitution.md`](.specify/memory/constitution.md): the project's rules: spec first, tests first, standard library only, errors as values.
 - [`CLAUDE.md`](CLAUDE.md): how [sairaghavak](https://github.com/sairaghavak) instructed the AI to work in this repo.
 
@@ -43,7 +61,7 @@ git checkout step-16-red    # the failing tests, before any calculator code
 
 ## The steps
 
-The steps that built feature 001, in order. Steps after 23 maintain the repo itself (for example, this README and the language stats) and are listed in the [journey](docs/journey.md). Each step links to its journey entry, and each commit link shows exactly what changed.
+The steps that built feature 001 (Steps 00 to 23), in order. Each step links to its journey entry, and each commit link shows exactly what changed.
 Rule steps turned [sairaghavak](https://github.com/sairaghavak)'s review feedback into written rules for the AI.
 Short file names are in [`specs/001-basic-arithmetic/`](specs/001-basic-arithmetic/) (documents) or [`cmd/calc/`](cmd/calc/) (code).
 Every step also adds its own journey entry, so the journey is not listed.
@@ -148,6 +166,11 @@ Every step also adds its own journey entry, so the journey is not listed.
 - **[Step 23](docs/journey.md#step-23--converge-third-run--tag-step-23-converged) · Converge: clean** (`/speckit-converge`)
   - Changed in commit [95d215f](https://github.com/sairaghavak/spec-driven-calculator/commit/95d215fddc92fe83dc93a0c8d78a74d11f50dcc8):
     - Only its journey entry
+
+> [!NOTE]
+> This list stops at Step 23, where feature 001 was finished. It is not extended with each new step,
+> because every README edit is itself a new step to list. Later steps, including all of feature 002
+> (Steps 28 to 37) and the README's own updates, are in the [journey](docs/journey.md).
 
 ## License
 
