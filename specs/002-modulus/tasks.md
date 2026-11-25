@@ -54,7 +54,7 @@ Done when the tests show `-7 % 3` gives `1`, `5 % 0.000` gives its three message
   - Division by zero: `5 % 0`, `5 % -0`
   - Three messages in order: `5 % 0.000`
   - Unknown operator: `4 ^ 2`
-  - Every edge case in the spec's "Edge Cases" section (14)
+  - Every edge case in the spec's "Edge Cases" section, except `1.5 + 2.25`, which feature 001's tests already check (13 of 14)
 - [ ] T004 [US1] - Write the mode tests in `cmd/calc/cli_test.go`
   - Session started with no input: the output is the welcome, whose third line is `Operations: +, -, *, /, %`
   - One-shot `calc 7 % 3`: prints `1`, exit code 0

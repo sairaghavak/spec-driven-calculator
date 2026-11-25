@@ -147,7 +147,8 @@ whether one number divides another, or see what is left over, without working it
   ([FR-001](#functional-requirements) rule 5).
 - `7.5 % 0`: the whole-number message for `7.5`, then division by zero ([FR-001](#functional-requirements) rule 5).
 - `7 % 0.0`: the whole-number message for `0.0`, then division by zero ([FR-001](#functional-requirements) rules 3 and 5).
-- `7.5 + 1`: shows `8.5`; the whole-number rule is for `%` only ([FR-001](#functional-requirements) rule 2).
+- `1.5 + 2.25`: shows `3.75`; the whole-number rule is for `%` only ([FR-001](#functional-requirements) rule 2). This
+  is feature 001's [US1](../001-basic-arithmetic/spec.md#us1--compute-a-basic-operation-p1) criterion 5, already tested there.
 - `7 % 3 % 2`: only the too-many-numbers message ([FR-001](#functional-requirements) rule 4).
 - `50%`: only the missing-number message ([FR-001](#functional-requirements) rule 4).
 
@@ -173,5 +174,8 @@ N/A: `%` adds no new data. The entities are feature 001's: operation, result, an
 ## Definition of Done
 
 - Every acceptance criterion and edge case passes as an automated test that cites [FR-001](#functional-requirements).
+  The one exception is the `1.5 + 2.25` edge case: feature 001's test for it already checks that
+  `+` still accepts decimals, and a new test could never be seen failing first (constitution,
+  Principle II).
 - Feature 001's tests still pass, with the texts listed in
   [Texts that change in feature 001](#texts-that-change-in-feature-001) updated to their new text.

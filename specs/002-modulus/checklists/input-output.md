@@ -20,7 +20,7 @@ the spec, and 1 stays open by the author's decision.
 | CHK001 | Pass | Edge cases `3 % 7`, `0 % 5`, `-0 % 5` |
 | CHK002 | Pass | Rule 1 (never negative) and rule 4 (feature 001's result format); edge case `-0 % 5` shows `0` |
 | CHK003 | Pass | Rule 2 and [Assumptions](../spec.md#assumptions): `7.0` and `0.000` are not whole |
-| CHK004 | Fixed | Rule 2 now says "on either side of `%`"; new edge case `7.5 + 1` shows `8.5` |
+| CHK004 | Fixed | Rule 2 now says "on either side of `%`"; new edge case `7.5 + 1` shows `8.5`. Step 34 replaced it with feature 001's `1.5 + 2.25`, which is already tested |
 | CHK005 | Pass | [Error messages](../spec.md#error-messages): `<text>` is the number exactly as typed, so `-7.5` keeps its sign |
 | CHK006 | Pass | The message names the problem, the text, and what is accepted; dropping the decimal part fixes the input |
 | CHK007 | Pass | Rule 5 orders kinds, not sides: `1.125 % 2` gives the digit-limit, then the whole-number message |
