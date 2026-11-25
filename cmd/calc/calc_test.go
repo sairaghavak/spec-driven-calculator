@@ -7,8 +7,9 @@ import (
 	"time"
 )
 
-// Exact message texts from the spec's "Error messages" table (FR-005 to FR-008, FR-014).
-const expectedForm = "expected <number> <operator> <number>, where <operator> is one of +, -, *, /"
+// Exact message texts from the spec's "Error messages" table (FR-005 to FR-008, FR-014). The operator
+// list includes %, as feature 002's table of changed texts says.
+const expectedForm = "expected <number> <operator> <number>, where <operator> is one of +, -, *, /, %"
 
 const (
 	msgNothingEntered = "no operation was entered; " + expectedForm
@@ -37,6 +38,11 @@ func msgTooManyDigits(text string) string {
 
 func msgMultLimit(text string) string {
 	return `"` + text + `" is out of range for multiplication; each number must be strictly between -200 and 200`
+}
+
+// msgNotWhole is feature 002's whole-number message, from its spec's "Error messages" table.
+func msgNotWhole(text string) string {
+	return `"` + text + `" is not a whole number; % accepts only whole numbers like 7 or 10`
 }
 
 // evalCase is one spec example. fr names the requirement it checks (constitution Principle II).
@@ -79,7 +85,7 @@ var evalCases = []evalCase{
 
 	// US2: informative message for bad input (T009).
 	{fr: "FR-006", input: "abc + 3", wantErr: []string{msgNotNumber("abc")}},
-	{fr: "FR-005", input: "4 % 2", wantErr: []string{msgUnknownOp("%")}},
+	{fr: "FR-005", input: "4 ^ 2", wantErr: []string{msgUnknownOp("^")}},
 	{fr: "FR-005", input: "4 +", wantErr: []string{msgMissingNumber}},
 	{fr: "FR-007", input: "8 / 0", wantErr: []string{msgDivisionByZero}},
 	{fr: "FR-014", input: "1000 + 1", wantErr: []string{msgTooManyDigits("1000")}},
@@ -136,6 +142,40 @@ var evalCases = []evalCase{
 	{fr: "FR-008", input: "-500 * 2", wantErr: []string{msgMultLimit("-500")}},
 	{fr: "FR-008", input: "-200 * 2", wantErr: []string{msgMultLimit("-200")}},
 	{fr: "FR-008", input: "-199 * 199", want: "-39601"},
+
+	// Feature 002, US1: remainder of two whole numbers (feature 002's T003).
+	// Acceptance criteria 1 to 9.
+	{fr: "002/FR-001", input: "7 % 3", want: "1"},
+	{fr: "002/FR-001", input: "4 % 2", want: "0"},
+	{fr: "002/FR-001", input: "-7 % 3", want: "1"},
+	{fr: "002/FR-001", input: "7 % -3", want: "1"},
+	{fr: "002/FR-001", input: "-7 % -3", want: "1"},
+	{fr: "002/FR-001", input: "999 % 250", want: "249"},
+	{fr: "002/FR-001", input: "7.5 % 10", wantErr: []string{msgNotWhole("7.5")}},
+	{fr: "002/FR-001", input: "10 % 7.5", wantErr: []string{msgNotWhole("7.5")}},
+	{fr: "002/FR-001", input: "7.0 % 2", wantErr: []string{msgNotWhole("7.0")}},
+	{fr: "002/FR-001", input: "5 % 0", wantErr: []string{msgDivisionByZero}},
+	{fr: "002/FR-001", input: "5 % -0", wantErr: []string{msgDivisionByZero}},
+	{fr: "002/FR-001", input: "5 % 0.000", wantErr: []string{msgTooManyDigits("0.000"), msgNotWhole("0.000"), msgDivisionByZero}},
+	{fr: "002/FR-001", input: "4 ^ 2", wantErr: []string{msgUnknownOp("^")}},
+	// Edge cases. 1.5 + 2.25 is not repeated here: feature 001's FR-002 case above checks it.
+	{fr: "002/FR-001", input: "7%3", want: "1"},
+	{fr: "002/FR-001", input: "7%-3", want: "1"},
+	{fr: "002/FR-001", input: "3 % 7", want: "3"},
+	{fr: "002/FR-001", input: "0 % 5", want: "0"},
+	{fr: "002/FR-001", input: "-0 % 5", want: "0"},
+	{fr: "002/FR-001", input: "999 % 999", want: "0"},
+	{fr: "002/FR-001", input: "999 % 7", want: "5"},
+	{fr: "002/FR-001", input: "1000 % 7", wantErr: []string{msgTooManyDigits("1000")}},
+	{fr: "002/FR-001", input: "007 % 2", wantErr: []string{msgLeadingZeros("007")}},
+	{fr: "002/FR-001", input: "7.5 % 2.5", wantErr: []string{msgNotWhole("7.5"), msgNotWhole("2.5")}},
+	{fr: "002/FR-001", input: "2.5 % abc", wantErr: []string{msgNotNumber("abc"), msgNotWhole("2.5")}},
+	{fr: "002/FR-001", input: "2.5 % 1000.5", wantErr: []string{msgTooManyDigits("1000.5"), msgNotWhole("2.5"), msgNotWhole("1000.5")}},
+	{fr: "002/FR-001", input: "abc % 0", wantErr: []string{msgNotNumber("abc"), msgDivisionByZero}},
+	{fr: "002/FR-001", input: "7.5 % 0", wantErr: []string{msgNotWhole("7.5"), msgDivisionByZero}},
+	{fr: "002/FR-001", input: "7 % 0.0", wantErr: []string{msgNotWhole("0.0"), msgDivisionByZero}},
+	{fr: "002/FR-001", input: "7 % 3 % 2", wantErr: []string{msgTooMany}},
+	{fr: "002/FR-001", input: "50%", wantErr: []string{msgMissingNumber}},
 }
 
 // problems splits an error into its list of problems, one per line.

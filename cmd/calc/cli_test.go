@@ -7,10 +7,11 @@ import (
 	"testing"
 )
 
-// The exact six-line welcome from FR-012, and what follows every answer in a session.
+// The exact six-line welcome from FR-012, with % in the operator line (feature 002's table of
+// changed texts), and what follows every answer in a session.
 const welcome = "Welcome to the interactive calculator session.\n" +
 	"A spec-driven development demo, built with GitHub Spec Kit.\n" +
-	"Operations: +, -, *, /\n" +
+	"Operations: +, -, *, /, %\n" +
 	"Use exactly 2 numbers and 1 operator, for example 2+3\n" +
 	"===========================================================\n" +
 	"Please enter your input. Example: 10/5\n"
@@ -51,6 +52,10 @@ func TestOneShot(t *testing.T) {
 			wantStderr: errorsBlock(msgNothingEntered), wantCode: 1},
 		{fr: "FR-013", name: "quit is not a command", args: []string{"quit"},
 			wantStderr: errorsBlock(msgMissingNumber), wantCode: 1},
+		// Feature 002, US1 criterion 11 (feature 002's T004).
+		{fr: "002/FR-001", name: "remainder", args: []string{"7", "%", "3"}, wantStdout: "1\n"},
+		{fr: "002/FR-001", name: "remainder of a decimal", args: []string{"7.5", "%", "10"},
+			wantStderr: errorsBlock(msgNotWhole("7.5")), wantCode: 1},
 	}
 	for _, tt := range tests {
 		t.Run(tt.fr+"/"+tt.name, func(t *testing.T) {
@@ -91,6 +96,9 @@ func TestInteractive(t *testing.T) {
 		{fr: "FR-013", name: "quit with spaces", stdin: "  quit  \n2+3\n",
 			wantStdout: welcome},
 		{fr: "FR-013", name: "end of input", stdin: "",
+			wantStdout: welcome},
+		// Feature 002, US1 criterion 10 (feature 002's T004): the welcome's third line lists %.
+		{fr: "002/FR-001", name: "welcome lists the remainder operator", stdin: "",
 			wantStdout: welcome},
 	}
 	for _, tt := range tests {

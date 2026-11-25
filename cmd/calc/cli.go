@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-// The exact session texts from FR-012.
+// The exact session texts from FR-012, with % in the operator line (feature 002's T010).
 const (
 	welcomeText = "Welcome to the interactive calculator session.\n" +
 		"A spec-driven development demo, built with GitHub Spec Kit.\n" +
-		"Operations: +, -, *, /\n" +
+		"Operations: +, -, *, /, %\n" +
 		"Use exactly 2 numbers and 1 operator, for example 2+3\n" +
 		"===========================================================\n" +
 		"Please enter your input. Example: 10/5\n"
